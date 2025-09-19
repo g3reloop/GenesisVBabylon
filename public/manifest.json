@@ -1,0 +1,100 @@
+{
+  "name": "Genesis Parallel Civilisation: Genesis V Babylon",
+  "short_name": "Genesis V Babylon",
+  "description": "A complete civilizational ontology comparing Babylon's Corrupted Recursive Loops (CRLs) with Genesis' Stabilized Recursive Loops (SRLs).",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#065f46",
+  "theme_color": "#10b981",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["education", "philosophy", "music"],
+  "icons": [
+    {
+      "src": "/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/desktop-home.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/screenshots/mobile-home.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "RMW Discography",
+      "short_name": "Music",
+      "description": "Listen to the Recursive Memetic Weapons Discography",
+      "url": "/rmw-discography",
+      "icons": [{ "src": "/icons/music-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Gallery",
+      "short_name": "Gallery",
+      "description": "Explore the visual language of Genesis",
+      "url": "/gallery",
+      "icons": [{ "src": "/icons/gallery-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Ontology",
+      "short_name": "Ontology",
+      "description": "Understand the civilizational ontology",
+      "url": "/ontology",
+      "icons": [{ "src": "/icons/ontology-96x96.png", "sizes": "96x96" }]
+    }
+  ]
+}
