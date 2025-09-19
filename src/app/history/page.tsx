@@ -542,7 +542,7 @@ export default function History() {
                   <strong>Technical Analysis:</strong> Spanish worker cooperative that grew from 5 founders to 80,000+ worker-owners without engaging in political revolution.
                 </p>
                 <p className="text-white/90 mb-4">
-                  <strong>Continuity Evidence:</strong> Mondragon implemented the Genesis Protocol: waste-to-value loops (diversified from cookware to renewable energy), decentralized governance (one worker, one vote), and community land trusts (housing cooperative owns 95% of worker housing). Survived 12 recessions with <1% unemployment rate (vs national average of 14.2% in Spain), proving parallel system resilience without fighting the existing system.
+                  <strong>Continuity Evidence:</strong> Mondragon implemented the Genesis Protocol: waste-to-value loops (diversified from cookware to renewable energy), decentralized governance (one worker, one vote), and community land trusts (housing cooperative owns 95% of worker housing). Survived 12 recessions with &lt;1% unemployment rate (vs national average of 14.2% in Spain), proving parallel system resilience without fighting the existing system.
                 </p>
                 <p className="text-white/70 text-sm">
                   <strong>Source:</strong>{' '}
