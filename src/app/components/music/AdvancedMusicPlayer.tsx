@@ -80,6 +80,52 @@ export default function AdvancedMusicPlayer({
   const progressRef = useRef<HTMLDivElement>(null);
   const playlistRef = useRef<HTMLDivElement>(null);
 
+  // Global keyboard event listener
+  useEffect(() => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      // Only handle if no input is focused
+      if (document.activeElement?.tagName === 'INPUT' || document.activeElement?.tagName === 'TEXTAREA') {
+        return;
+      }
+      
+      switch (e.key) {
+        case ' ':
+          e.preventDefault();
+          onPlayPause();
+          break;
+        case 'ArrowLeft':
+          e.preventDefault();
+          onPrevious();
+          break;
+        case 'ArrowRight':
+          e.preventDefault();
+          onNext();
+          break;
+        case 'ArrowUp':
+          e.preventDefault();
+          onVolumeChange(Math.min(1, volume + 0.1));
+          break;
+        case 'ArrowDown':
+          e.preventDefault();
+          onVolumeChange(Math.max(0, volume - 0.1));
+          break;
+        case 'f':
+        case 'F':
+          e.preventDefault();
+          onFullscreenToggle();
+          break;
+        case 'l':
+        case 'L':
+          e.preventDefault();
+          onToggleLyrics();
+          break;
+      }
+    };
+
+    document.addEventListener('keydown', handleGlobalKeyDown);
+    return () => document.removeEventListener('keydown', handleGlobalKeyDown);
+  }, [onPlayPause, onPrevious, onNext, onVolumeChange, volume, onFullscreenToggle, onToggleLyrics]);
+
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
@@ -156,11 +202,13 @@ export default function AdvancedMusicPlayer({
 
   return (
     <div 
-      className={`fixed bottom-0 left-0 right-0 z-50 bg-emerald-900/95 backdrop-blur-lg border-t border-emerald-700/50 transition-all duration-300 ${
+      className={`fixed bottom-0 left-0 right-0 z-50 bg-emerald-900/20 backdrop-blur-xl border-t border-emerald-400/30 shadow-2xl transition-all duration-300 ${
         isFullscreen ? 'top-0 h-screen' : 'h-auto'
       }`}
       onKeyDown={handleKeyDown}
       tabIndex={0}
+      role="region"
+      aria-label="Music Player"
     >
       <div className={`max-w-7xl mx-auto px-2 sm:px-4 py-2 sm:py-3 ${isFullscreen ? 'h-full flex flex-col' : ''}`}>
         {/* Main Player Controls - Mobile Optimized */}
@@ -331,7 +379,7 @@ export default function AdvancedMusicPlayer({
         {isExpanded && (
           <div className="mt-4 flex-1 flex flex-col lg:flex-row gap-6">
             {/* Playlist */}
-            <div className="flex-1">
+            <div className="flex-1 bg-emerald-900/20 backdrop-blur-xl border border-emerald-400/30 p-6 rounded-2xl shadow-2xl">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-white font-semibold text-lg">Playlist</h3>
                 <div className="flex items-center space-x-2">
@@ -411,7 +459,7 @@ export default function AdvancedMusicPlayer({
 
             {/* Lyrics Display */}
             {showLyrics && (
-              <div className="flex-1">
+              <div className="flex-1 bg-emerald-900/20 backdrop-blur-xl border border-emerald-400/30 p-6 rounded-2xl shadow-2xl">
                 <h3 className="text-white font-semibold text-lg mb-4">Lyrics</h3>
                 <div className="bg-emerald-800/30 rounded-lg p-4 max-h-64 overflow-y-auto">
                   <div className="text-emerald-100 text-sm whitespace-pre-wrap font-mono">

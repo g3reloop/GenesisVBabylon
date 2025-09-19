@@ -13,18 +13,37 @@ export default function Ontology() {
         <div className="max-w-6xl mx-auto">
           <DisclaimerBanner />
           
-          <GlassCard className="mb-8">
-            <h1 className="text-5xl font-bold text-white mb-6 font-montserrat drop-shadow-lg">
+          <GlassCard 
+            fullScreen={true}
+            role="main"
+            ariaLabel="Civilizational Ontology Introduction"
+            className="mb-8"
+          >
+            <h1 
+              id="ontology-title"
+              className="text-6xl font-bold text-white mb-8 font-montserrat drop-shadow-lg text-center"
+            >
               Civilizational Ontology
             </h1>
-            <p className="text-xl text-white/90 leading-relaxed drop-shadow-md">
+            <p 
+              className="text-2xl text-white/90 leading-relaxed drop-shadow-md text-center max-w-4xl mx-auto"
+              aria-describedby="ontology-description"
+            >
               Civilization isn't built on ideas but recursive patterns. We map the foundational seed of Babylon (private property) 
               and Genesis (verified value creation), showing how each seed grows into a complete civilizational structure through recursion.
             </p>
+            <div id="ontology-description" className="sr-only">
+              This section introduces the fundamental concepts of civilizational ontology, explaining how different seed patterns create different civilizational outcomes through recursive loops.
+            </div>
           </GlassCard>
 
-          <GlassCard className="mb-8">
-            <h2 className="text-4xl font-bold text-green-400 mb-6 font-montserrat">The Recursive Seed: Private Property as Instruction Set</h2>
+          <GlassCard 
+            fullScreen={true}
+            role="region"
+            ariaLabel="Recursive Seed Analysis"
+            className="mb-8"
+          >
+            <h2 className="text-5xl font-bold text-green-400 mb-8 font-montserrat text-center">The Recursive Seed: Private Property as Instruction Set</h2>
             
             <div className="glass-container rounded-lg p-6 mb-6">
               <p className="text-white/90 mb-6">
@@ -47,8 +66,13 @@ export default function Ontology() {
             </div>
           </GlassCard>
 
-          <GlassCard className="mb-8">
-            <h2 className="text-4xl font-bold text-green-400 mb-6 font-montserrat">Babylon CRL vs Genesis SRL</h2>
+          <GlassCard 
+            fullScreen={true}
+            role="region"
+            ariaLabel="Babylon CRL vs Genesis SRL Comparison"
+            className="mb-8"
+          >
+            <h2 className="text-5xl font-bold text-green-400 mb-8 font-montserrat text-center">Babylon CRL vs Genesis SRL</h2>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-6">
               <div className="glass-container rounded-lg p-6 border-l-4 border-red-500">
