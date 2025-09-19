@@ -350,6 +350,12 @@ export function AdvancedMusicPlayerProvider({ songs, children }: AdvancedMusicPl
       // Force load the audio metadata
       audioRef.current.load();
       
+      // Add error handling for audio loading
+      audioRef.current.addEventListener('error', (e) => {
+        console.error('Audio loading error:', e);
+        console.error('Failed to load:', currentSong.audioFile);
+      });
+      
       // Try to load metadata immediately
       if (audioRef.current.readyState >= 1) {
         console.log('Audio already has metadata, duration:', audioRef.current.duration);
@@ -363,6 +369,8 @@ export function AdvancedMusicPlayerProvider({ songs, children }: AdvancedMusicPl
         if (audioRef.current && !isNaN(audioRef.current.duration) && audioRef.current.duration > 0) {
           console.log('Fallback duration detection:', audioRef.current.duration);
           setDuration(audioRef.current.duration);
+        } else {
+          console.warn('Audio duration not detected for:', currentSong.songName);
         }
       }, 500);
     }
@@ -477,6 +485,7 @@ export function AdvancedMusicPlayerProvider({ songs, children }: AdvancedMusicPl
         crossOrigin="anonymous"
         playsInline
         webkit-playsinline="true"
+        volume={volume}
       />
       
       {/* Advanced Music Player */}
