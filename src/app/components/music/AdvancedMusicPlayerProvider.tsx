@@ -117,7 +117,7 @@ export function AdvancedMusicPlayerProvider({ songs, children }: AdvancedMusicPl
   // Initialize current song with persistence
   useEffect(() => {
     if (songs.length > 0 && !currentSong) {
-      let initialSong = songs[0]; // Default to first song
+      let initialSong = songs[0]; // Default to first song (Cry's & Crosses)
       
       // Try to load from localStorage
       if (typeof window !== 'undefined') {
@@ -139,7 +139,8 @@ export function AdvancedMusicPlayerProvider({ songs, children }: AdvancedMusicPl
       }
       
       setCurrentSong(initialSong);
-      setIsPlaying(true);
+      // Don't auto-play on initialization to prevent multiple tracks playing
+      setIsPlaying(false);
     }
   }, [songs, currentSong]);
 
@@ -151,6 +152,12 @@ export function AdvancedMusicPlayerProvider({ songs, children }: AdvancedMusicPl
   }, [currentSong]);
 
   const playSong = (song: Song) => {
+    // Stop current audio before changing song
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+    
     setCurrentSong(song);
     setIsPlaying(true);
     // Auto-play the song when selected
@@ -180,6 +187,13 @@ export function AdvancedMusicPlayerProvider({ songs, children }: AdvancedMusicPl
 
   const playNext = () => {
     if (!currentSong) return;
+    
+    // Stop current audio before changing
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+    
     const currentIndex = sortedSongs.findIndex(song => song.songNumber === currentSong.songNumber);
     let nextIndex;
     
@@ -195,6 +209,13 @@ export function AdvancedMusicPlayerProvider({ songs, children }: AdvancedMusicPl
 
   const playPrevious = () => {
     if (!currentSong) return;
+    
+    // Stop current audio before changing
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+    
     const currentIndex = sortedSongs.findIndex(song => song.songNumber === currentSong.songNumber);
     const prevIndex = currentIndex === 0 ? sortedSongs.length - 1 : currentIndex - 1;
     playSong(sortedSongs[prevIndex]);
@@ -315,6 +336,10 @@ export function AdvancedMusicPlayerProvider({ songs, children }: AdvancedMusicPl
     if (audioRef.current && currentSong) {
       console.log('Loading new song:', currentSong.songName, 'from:', currentSong.audioFile);
       
+      // Stop current audio before changing source
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      
       // Reset duration and time when changing songs
       setDuration(0);
       setCurrentTime(0);
@@ -369,6 +394,28 @@ export function AdvancedMusicPlayerProvider({ songs, children }: AdvancedMusicPl
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, [isPlaying]);
+
+  // Cleanup function to stop all audio elements
+  useEffect(() => {
+    const cleanup = () => {
+      // Stop all audio elements on the page
+      const allAudioElements = document.querySelectorAll('audio');
+      allAudioElements.forEach(audio => {
+        if (audio !== audioRef.current) {
+          audio.pause();
+          audio.currentTime = 0;
+          // Remove duplicate audio elements
+          audio.remove();
+        }
+      });
+    };
+
+    // Run cleanup when component mounts
+    cleanup();
+
+    // Also run cleanup when currentSong changes
+    return cleanup;
+  }, [currentSong]);
 
   // Lyrics synchronization (simplified - shows current lyrics)
   useEffect(() => {
