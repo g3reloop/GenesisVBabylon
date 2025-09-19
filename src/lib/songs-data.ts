@@ -11,7 +11,7 @@ export interface Song {
 export const songs: Song[] = [
   {
     songNumber: 1,
-    songName: "PCG3",
+    songName: "Cry's & Crosses",
     description: "The opening track establishes the core Genesis philosophy through recursive lyrical patterns. PCG3 (Pure Collapse Genesis 3) introduces the concept of razing Babylon's Corrupted Recursive Loops (CRLs) while building Genesis Stabilized Recursive Loops (SRLs).",
     linkToWebsite: "/genesis-protocol",
     lyrics: `When I see those CERLS of obsequious worlds,
