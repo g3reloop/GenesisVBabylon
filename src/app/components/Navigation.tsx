@@ -34,7 +34,7 @@ const Navigation = () => {
           >
             <div className="relative w-10 h-10 flex-shrink-0">
               <Image
-                src="/images/logos/genesis-logo.svg"
+                src="/images/logos/genesis-logo.png"
                 alt="Genesis Logo"
                 width={40}
                 height={40}

@@ -213,8 +213,33 @@ export function AdvancedMusicPlayerProvider({ songs, children }: AdvancedMusicPl
     const audio = audioRef.current;
     if (!audio) return;
 
-    const updateTime = () => setCurrentTime(audio.currentTime);
-    const updateDuration = () => setDuration(audio.duration);
+    const updateTime = () => {
+      if (!isNaN(audio.currentTime)) {
+        setCurrentTime(audio.currentTime);
+      }
+    };
+    
+    const updateDuration = () => {
+      console.log('Audio metadata loaded, duration:', audio.duration);
+      if (!isNaN(audio.duration) && audio.duration > 0) {
+        setDuration(audio.duration);
+      }
+    };
+    
+    const handleLoadedData = () => {
+      console.log('Audio data loaded, duration:', audio.duration);
+      if (!isNaN(audio.duration) && audio.duration > 0) {
+        setDuration(audio.duration);
+      }
+    };
+    
+    const handleCanPlay = () => {
+      console.log('Audio can play, duration:', audio.duration);
+      if (!isNaN(audio.duration) && audio.duration > 0) {
+        setDuration(audio.duration);
+      }
+    };
+    
     const handleEnded = () => {
       if (isRepeating) {
         // Repeat current song
@@ -227,29 +252,60 @@ export function AdvancedMusicPlayerProvider({ songs, children }: AdvancedMusicPl
         playNext();
       }
     };
-    const handleError = () => {
-      console.log('Audio error, stopping playback');
+    
+    const handleError = (e: Event) => {
+      console.log('Audio error:', e);
       setIsPlaying(false);
     };
 
+    // Add multiple event listeners to catch duration
     audio.addEventListener('timeupdate', updateTime);
     audio.addEventListener('loadedmetadata', updateDuration);
+    audio.addEventListener('loadeddata', handleLoadedData);
+    audio.addEventListener('canplay', handleCanPlay);
     audio.addEventListener('ended', handleEnded);
     audio.addEventListener('error', handleError);
 
     return () => {
       audio.removeEventListener('timeupdate', updateTime);
       audio.removeEventListener('loadedmetadata', updateDuration);
+      audio.removeEventListener('loadeddata', handleLoadedData);
+      audio.removeEventListener('canplay', handleCanPlay);
       audio.removeEventListener('ended', handleEnded);
       audio.removeEventListener('error', handleError);
     };
-  }, [currentSong, isRepeating]);
+  }, [currentSong, isRepeating, playNext]);
 
   // Update audio source when song changes
   useEffect(() => {
     if (audioRef.current && currentSong) {
+      console.log('Loading new song:', currentSong.songName, 'from:', currentSong.audioFile);
+      
+      // Reset duration and time when changing songs
+      setDuration(0);
+      setCurrentTime(0);
+      
+      // Set new source
       audioRef.current.src = currentSong.audioFile;
+      
+      // Force load the audio metadata
       audioRef.current.load();
+      
+      // Try to load metadata immediately
+      if (audioRef.current.readyState >= 1) {
+        console.log('Audio already has metadata, duration:', audioRef.current.duration);
+        if (!isNaN(audioRef.current.duration) && audioRef.current.duration > 0) {
+          setDuration(audioRef.current.duration);
+        }
+      }
+      
+      // Fallback: try to get duration after a short delay
+      setTimeout(() => {
+        if (audioRef.current && !isNaN(audioRef.current.duration) && audioRef.current.duration > 0) {
+          console.log('Fallback duration detection:', audioRef.current.duration);
+          setDuration(audioRef.current.duration);
+        }
+      }, 500);
     }
   }, [currentSong]);
 

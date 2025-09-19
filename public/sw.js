@@ -1,36 +1,8 @@
-const CACHE_NAME = 'genesis-v-babylon-v1.0.1';
-const urlsToCache = [
-  '/',
-  '/ontology',
-  '/history',
-  '/surgical-analysis',
-  '/collapse-protocol',
-  '/ai-as-tool-within-genesis',
-  '/genesis-protocol',
-  '/memetic-weapons',
-  '/esoteric-systems',
-  '/fractal-growth',
-  '/why-genesis-wins',
-  '/gallery',
-  '/rmw-discography',
-  '/manifest.json',
-  '/icons/icon-192x192.png',
-  '/icons/icon-512x512.png'
-];
+const CACHE_NAME = 'genesis-v-babylon-v1.0.2';
 
 // Install event - cache resources
 self.addEventListener('install', (event) => {
   console.log('Service Worker installing...');
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => {
-        console.log('Opened cache');
-        return cache.addAll(urlsToCache);
-      })
-      .catch((error) => {
-        console.log('Cache install failed:', error);
-      })
-  );
   self.skipWaiting();
 });
 
@@ -52,7 +24,7 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Fetch event - serve from cache when offline
+// Fetch event - only cache static assets, not navigation
 self.addEventListener('fetch', (event) => {
   // Skip non-GET requests
   if (event.request.method !== 'GET') {
@@ -64,42 +36,48 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        // Return cached version if available
-        if (response) {
-          return response;
-        }
-        
-        // Fetch from network
-        return fetch(event.request)
-          .then((response) => {
-            // Don't cache non-successful responses
-            if (!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
-            }
-            
-            // Clone the response for caching
-            const responseToCache = response.clone();
-            
-            caches.open(CACHE_NAME)
-              .then((cache) => {
-                cache.put(event.request, responseToCache);
-              });
-            
+  // Only cache static assets, not navigation requests
+  const url = new URL(event.request.url);
+  const isStaticAsset = url.pathname.match(/\.(js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot|mp3|wav|ogg)$/);
+  const isManifest = url.pathname === '/manifest.json';
+  
+  if (isStaticAsset || isManifest) {
+    event.respondWith(
+      caches.match(event.request)
+        .then((response) => {
+          // Return cached version if available
+          if (response) {
             return response;
-          })
-          .catch(() => {
-            // Return offline page for navigation requests
-            if (event.request.destination === 'document') {
-              return caches.match('/');
-            }
-            // Return a basic response for other requests
-            return new Response('Offline', { status: 503 });
-          });
-      })
-  );
+          }
+          
+          // Fetch from network and cache
+          return fetch(event.request)
+            .then((response) => {
+              // Don't cache non-successful responses
+              if (!response || response.status !== 200 || response.type !== 'basic') {
+                return response;
+              }
+              
+              // Clone the response for caching
+              const responseToCache = response.clone();
+              
+              caches.open(CACHE_NAME)
+                .then((cache) => {
+                  cache.put(event.request, responseToCache);
+                });
+              
+              return response;
+            })
+            .catch(() => {
+              // Return a basic response for failed requests
+              return new Response('Asset not available', { status: 404 });
+            });
+        })
+    );
+  }
+  
+  // For navigation requests, let the browser handle them normally
+  // This prevents the service worker from interfering with routing
 });
 
 // Background music support
