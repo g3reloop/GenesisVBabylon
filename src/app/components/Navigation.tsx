@@ -20,6 +20,7 @@ const Navigation = () => {
     { href: '/esoteric-systems', label: 'Esoteric Systems' },
     { href: '/fractal-growth', label: 'Fractal Growth' },
     { href: '/why-genesis-wins', label: 'Why Genesis Wins' },
+    { href: '/platform', label: 'Operator Platform' },
     { href: '/gallery', label: 'Gallery' },
     { href: '/rmw-discography', label: 'RMW Discography' },
   ];

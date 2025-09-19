@@ -396,3 +396,8 @@ body {
   background-position: center;
   background-attachment: fixed;
 }
+
+.bg-platform {
+  background: linear-gradient(135deg, #065f46 0%, #166534 50%, #065f46 100%);
+  background-attachment: fixed;
+}
