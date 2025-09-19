@@ -146,3 +146,4 @@ For issues or questions:
 3. Check Supabase logs
 4. Test locally with `npm run dev`
 
+

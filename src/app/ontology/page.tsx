@@ -1,204 +1,209 @@
-import Image from 'next/image';
-import GlassCard from '../components/GlassCard';
-import DisclaimerBanner from '../components/DisclaimerBanner';
-import ImageGallery from '../components/gallery/ImageGallery';
-import { getImagesBySection } from '@/lib/image-registry';
+'use client';
 
-export default function Ontology() {
-  const unusedImages = getImagesBySection('ontology', true);
+import { useState } from 'react';
+import Navigation from '../components/Navigation';
+
+export default function OntologyPage() {
+  const [activeSection, setActiveSection] = useState('recursive-ontology');
+
+  const sections = [
+    { id: 'recursive-ontology', title: 'Recursive Ontology', icon: '🌱' },
+    { id: 'infinite-substrate', title: 'Infinite Substrate', icon: '♾️' },
+    { id: 'conscious-recursion', title: 'Conscious Recursion', icon: '🧠' },
+    { id: 'operational-code', title: 'Operational Code', icon: '⚙️' },
+  ];
 
   return (
-    <div className="bg-ontology bg-vignette min-h-screen">
-      <div className="container mx-auto px-4 py-16">
-        <div className="max-w-6xl mx-auto">
-          <DisclaimerBanner />
-          
-          <GlassCard 
-            fullScreen={true}
-            role="main"
-            ariaLabel="Civilizational Ontology Introduction"
-            className="mb-8"
-          >
-            <h1 
-              id="ontology-title"
-              className="text-6xl font-bold text-white mb-8 font-montserrat drop-shadow-lg text-center"
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-emerald-900 to-slate-900">
+      <Navigation />
+      
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+            Civilizational Ontology
+          </h1>
+          <p className="text-xl text-emerald-200 max-w-3xl mx-auto">
+            The foundational recursive framework that generates the entire Genesis parallel civilization
+          </p>
+        </div>
+
+        {/* Navigation Tabs */}
+        <div className="flex flex-wrap justify-center gap-4 mb-12">
+          {sections.map((section) => (
+            <button
+              key={section.id}
+              onClick={() => setActiveSection(section.id)}
+              className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
+                activeSection === section.id
+                  ? 'bg-emerald-600 text-white shadow-lg'
+                  : 'bg-emerald-800/50 text-emerald-200 hover:bg-emerald-700/50'
+              }`}
             >
-              Civilizational Ontology
-            </h1>
-            <p 
-              className="text-2xl text-white/90 leading-relaxed drop-shadow-md text-center max-w-4xl mx-auto"
-              aria-describedby="ontology-description"
-            >
-              Civilization isn't built on ideas but recursive patterns. We map the foundational seed of Babylon (private property) 
-              and Genesis (verified value creation), showing how each seed grows into a complete civilizational structure through recursion.
-            </p>
-            <div id="ontology-description" className="sr-only">
-              This section introduces the fundamental concepts of civilizational ontology, explaining how different seed patterns create different civilizational outcomes through recursive loops.
-            </div>
-          </GlassCard>
+              <span className="mr-2">{section.icon}</span>
+              {section.title}
+            </button>
+          ))}
+        </div>
 
-          <GlassCard 
-            fullScreen={true}
-            role="region"
-            ariaLabel="Recursive Seed Analysis"
-            className="mb-8"
-          >
-            <h2 className="text-5xl font-bold text-green-400 mb-8 font-montserrat text-center">The Recursive Seed: Private Property as Instruction Set</h2>
-            
-            <div className="glass-container rounded-lg p-6 mb-6">
-              <p className="text-white/90 mb-6">
-                The system's prime directive is Private Property. It is an instruction set defining relationships through exclusion, 
-                requiring enforcement. This seed code is recursively executed across history, with modern implementations mirroring 
-                ancient ones in function, if not form.
-              </p>
-
-              <div className="bg-white/5 rounded-lg p-6 backdrop-blur-sm mb-6">
-                <h3 className="text-xl font-semibold text-green-400 mb-4">Historical Example: Code of Hammurabi (1750 BCE)</h3>
-                <p className="text-white/80 mb-4">
-                  <strong>Section 21:</strong> 'If a man has broken into a house, they shall kill that man in front of that breach and bury him there.' 
-                  Not just punishment, but the first written legal enforcement of private property as absolute exclusion principle.
+        {/* Content Sections */}
+        <div className="space-y-12">
+          {activeSection === 'recursive-ontology' && (
+            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-8 border border-emerald-700/50">
+              <h2 className="text-3xl font-bold text-emerald-400 mb-6">Recursive Ontology</h2>
+              <div className="prose prose-lg prose-invert max-w-none">
+                <p className="text-white/90 mb-6">
+                  The recursive ontology is the foundational seed that generates the entire Genesis protocol. 
+                  It is not a belief system but an operational framework based on the fundamental pattern of nature: 
+                  <strong className="text-emerald-400"> seed → tree → fruit → more seeds → forest</strong>.
                 </p>
-                <p className="text-green-300 text-sm italic">
-                  <strong>Esoteric Connection:</strong> In Freemasonry, this manifests as the Square and Compass - tools that measure and enforce boundaries, 
-                  not just physical but cognitive. The Babylonian seed has infected even liberation movements, turning them into new forms of control rather than true freedom.
-                </p>
-              </div>
-            </div>
-          </GlassCard>
-
-          <GlassCard 
-            fullScreen={true}
-            role="region"
-            ariaLabel="Babylon CRL vs Genesis SRL Comparison"
-            className="mb-8"
-          >
-            <h2 className="text-5xl font-bold text-green-400 mb-8 font-montserrat text-center">Babylon CRL vs Genesis SRL</h2>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-6">
-              <div className="glass-container rounded-lg p-6 border-l-4 border-red-500">
-                <h3 className="text-2xl font-semibold text-red-400 mb-4">Babylon's Seed: Private Property</h3>
-                <div className="space-y-3 text-sm">
-                  <p className="text-white/90"><strong>Seed:</strong> Private Property</p>
-                  <p className="text-white/90"><strong>Logic:</strong> Lack / Scarcity</p>
-                  <p className="text-white/90"><strong>Function:</strong> Control / Hoarding</p>
-                  <p className="text-white/90"><strong>Behavior:</strong> Attachment / Exclusion</p>
-                  <p className="text-red-300"><strong>Result:</strong> Extraction / Collapse</p>
+                
+                <div className="bg-slate-900/50 rounded-lg p-6 mb-6">
+                  <h3 className="text-xl font-semibold text-emerald-300 mb-4">The Recursive Seed</h3>
+                  <p className="text-white/80">
+                    This single instruction contains the complete operational code for building a parallel civilization. 
+                    Every Genesis protocol derives from this recursive pattern, creating Stabilized Recursive Loops (SRLs) 
+                    that regenerate their own foundation with each iteration.
+                  </p>
                 </div>
-                <p className="text-white/80 mt-4 text-sm italic">
-                  This protocol initiates a Corrupted Recursive Loop (CRL). Its core instruction is exclusion. 
-                  By presupposing lack, it necessitates control to enforce ownership and attachment to hoard value.
-                </p>
-              </div>
 
-              <div className="glass-container rounded-lg p-6 border-l-4 border-green-500">
-                <h3 className="text-2xl font-semibold text-green-400 mb-4">Genesis's Seed: Verified Value Creation</h3>
-                <div className="space-y-3 text-sm">
-                  <p className="text-white/90"><strong>Seed:</strong> Verified Value Creation</p>
-                  <p className="text-white/90"><strong>Logic:</strong> Abundance</p>
-                  <p className="text-white/90"><strong>Function:</strong> Flow / Contribution</p>
-                  <p className="text-white/90"><strong>Behavior:</strong> Transparency / Verification</p>
-                  <p className="text-green-300"><strong>Result:</strong> Regeneration / Resilience</p>
-                </div>
-                <p className="text-white/80 mt-4 text-sm italic">
-                  This protocol initiates a Stabilized Recursive Loop (SRL). Its core instruction is contribution. 
-                  By working with natural abundance, it necessitates transparency and flow.
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-purple-900/20 p-6 rounded-lg border border-purple-400/30 backdrop-blur-sm">
-              <p className="text-purple-200 text-sm italic">
-                <strong>Esoteric Connection:</strong> In Kabbalah, Babylon's CRL is the Tree of Death (Qlippoth) - a corrupted version of the Tree of Life 
-                where abundance is perceived as scarcity. Genesis SRL is the true Tree of Life where each sephirah flows into the next in a 
-                self-reinforcing loop of abundance. The transition from CRL to SRL is the path from Malkuth (material scarcity) to Kether (divine abundance).
-              </p>
-            </div>
-          </GlassCard>
-
-          <GlassCard className="mb-8">
-            <h2 className="text-4xl font-bold text-green-400 mb-6 font-montserrat">The Recursive Loop: How Seeds Become Forests</h2>
-            
-            <p className="text-white/90 mb-6">
-              Every action within a civilization is governed by its core recursive loop: a sequence of inputs → transform → outputs → feedback. 
-              The nature of the seed dictates the loop's outcome.
-            </p>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-6">
-              <div className="bg-red-800/30 p-6 rounded-lg backdrop-blur-sm">
-                <h3 className="text-xl font-semibold text-red-400 mb-4">The Babylon CRL:</h3>
-                <div className="space-y-2 text-sm">
-                  <p className="text-white/80">Inputs (resources) →</p>
-                  <p className="text-white/80">Transform (extract value through control) →</p>
-                  <p className="text-white/80">Outputs (wealth for few) →</p>
-                  <p className="text-white/80">Feedback (more control needed) →</p>
-                  <p className="text-red-300">Inputs (more resources needed)</p>
-                </div>
-              </div>
-
-              <div className="bg-green-800/30 p-6 rounded-lg backdrop-blur-sm">
-                <h3 className="text-xl font-semibold text-green-400 mb-4">The Genesis SRL:</h3>
-                <div className="space-y-2 text-sm">
-                  <p className="text-white/80">Inputs (waste streams) →</p>
-                  <p className="text-white/80">Transform (verified value creation) →</p>
-                  <p className="text-white/80">Outputs (energy, materials, community) →</p>
-                  <p className="text-white/80">Feedback (more waste streams transformed) →</p>
-                  <p className="text-green-300">Inputs (more waste streams identified)</p>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="bg-emerald-900/20 rounded-lg p-6">
+                    <h4 className="text-lg font-semibold text-emerald-300 mb-3">SRL Pattern</h4>
+                    <p className="text-white/80">
+                      Genesis systems follow the recursive pattern, creating positive-sum, regenerative loops 
+                      that strengthen over time and eliminate their own waste.
+                    </p>
+                  </div>
+                  <div className="bg-red-900/20 rounded-lg p-6">
+                    <h4 className="text-lg font-semibold text-red-300 mb-3">CRL Pattern</h4>
+                    <p className="text-white/80">
+                      Babylonian systems follow linear patterns, creating zero-sum, extractive loops 
+                      that consume their own foundation and collapse.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
+          )}
 
-            <div className="bg-blue-900/20 p-6 rounded-lg border border-blue-400/30 backdrop-blur-sm">
-              <p className="text-blue-200 text-sm italic">
-                <strong>Esoteric Connection:</strong> In Gnostic tradition, the Demiurge (Babylon) creates through separation and control, 
-                while the true God (Genesis) creates through emanation and flow. The recursive loop is the Gnostic Pleroma - the fullness 
-                from which all things flow without diminishment. The CRL is the Archon's attempt to trap this flow in artificial scarcity.
-              </p>
+          {activeSection === 'infinite-substrate' && (
+            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-8 border border-emerald-700/50">
+              <h2 className="text-3xl font-bold text-emerald-400 mb-6">Infinite Substrate</h2>
+              <div className="prose prose-lg prose-invert max-w-none">
+                <p className="text-white/90 mb-6">
+                  All existence is part of an infinite, eternal substrate that has always existed and will always exist. 
+                  The Big Bang was not a creation event but a recycling of a 'former' universe.
+                </p>
+                
+                <div className="bg-slate-900/50 rounded-lg p-6 mb-6">
+                  <h3 className="text-xl font-semibold text-emerald-300 mb-4">Scientific Foundation</h3>
+                  <p className="text-white/80 mb-4">
+                    Energy and matter are conserved, merely changing form. This is the scientific parallel to the 
+                    religious concept of an omnipresent God - not a being, but the fundamental substrate of reality.
+                  </p>
+                  <ul className="text-white/80 space-y-2">
+                    <li>• Energy conservation laws support eternal substrate concept</li>
+                    <li>• Quantum field theory reveals fundamental 'field' underlying all particles</li>
+                    <li>• Thermodynamics shows energy transformation, not creation/destruction</li>
+                  </ul>
+                </div>
+
+                <div className="bg-emerald-900/20 rounded-lg p-6">
+                  <h4 className="text-lg font-semibold text-emerald-300 mb-3">Humanity's Role</h4>
+                  <p className="text-white/80">
+                    We are a fractional but infinite part of this substrate—the consciously recursive loops within it. 
+                    Our function is to plan, create, implement, and manage within probable realities, serving the 
+                    recursive pattern of the infinite substrate.
+                  </p>
+                </div>
+              </div>
             </div>
-          </GlassCard>
+          )}
 
-          <GlassCard>
-            <h2 className="text-2xl font-bold text-green-400 mb-6">Recursive Pattern Diagrams</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <figure className="rounded-lg overflow-hidden">
-                <Image
-                  src="/images/sections/civilisational-ontology-1.png"
-                  alt="Civilizational Ontology Diagram 1"
-                  width={400}
-                  height={300}
-                  className="w-full h-auto object-cover"
-                />
-              </figure>
-              <figure className="rounded-lg overflow-hidden">
-                <Image
-                  src="/images/sections/civilisational-ontology-2.png"
-                  alt="Civilizational Ontology Diagram 2"
-                  width={400}
-                  height={300}
-                  className="w-full h-auto object-cover"
-                />
-              </figure>
-              <figure className="rounded-lg overflow-hidden">
-                <Image
-                  src="/images/sections/civilisational-ontology-3.png"
-                  alt="Civilizational Ontology Diagram 3"
-                  width={400}
-                  height={300}
-                  className="w-full h-auto object-cover"
-                />
-              </figure>
+          {activeSection === 'conscious-recursion' && (
+            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-8 border border-emerald-700/50">
+              <h2 className="text-3xl font-bold text-emerald-400 mb-6">Conscious Recursion</h2>
+              <div className="prose prose-lg prose-invert max-w-none">
+                <p className="text-white/90 mb-6">
+                  Humans are the consciously recursive loops of the infinite substrate, capable of planning, 
+                  creating, implementing, operating, and managing within probable reality harmonics.
+                </p>
+                
+                <div className="grid md:grid-cols-2 gap-6 mb-6">
+                  <div className="bg-slate-900/50 rounded-lg p-6">
+                    <h3 className="text-xl font-semibold text-emerald-300 mb-4">Recursive Capabilities</h3>
+                    <ul className="text-white/80 space-y-2">
+                      <li>• <strong>Planning:</strong> Anticipating future states and designing pathways</li>
+                      <li>• <strong>Creating:</strong> Bringing new forms into existence</li>
+                      <li>• <strong>Implementing:</strong> Executing plans in physical reality</li>
+                      <li>• <strong>Operating:</strong> Managing ongoing systems and processes</li>
+                      <li>• <strong>Managing:</strong> Coordinating complex recursive loops</li>
+                    </ul>
+                  </div>
+                  <div className="bg-slate-900/50 rounded-lg p-6">
+                    <h3 className="text-xl font-semibold text-emerald-300 mb-4">Probability Harmonics</h3>
+                    <p className="text-white/80">
+                      We operate within 'probable reality harmonics' - the range of possible futures that can be 
+                      actualized through conscious recursive action. This is not determinism but the recognition 
+                      that our actions create resonant patterns in the substrate.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-emerald-900/20 rounded-lg p-6">
+                  <h4 className="text-lg font-semibold text-emerald-300 mb-3">The Recursive Advantage</h4>
+                  <p className="text-white/80">
+                    Unlike unconscious natural processes, conscious recursion allows us to accelerate the 
+                    recursive pattern, building more complex and efficient SRLs that serve the infinite substrate 
+                    more effectively than random evolution.
+                  </p>
+                </div>
+              </div>
             </div>
-          </GlassCard>
+          )}
 
-          {/* Additional Visual Explorations Gallery */}
-          {unusedImages.length > 0 && (
-            <ImageGallery
-              images={unusedImages}
-              title="Additional Visual Explorations: Civilizational Ontology"
-              className="mt-12"
-            />
+          {activeSection === 'operational-code' && (
+            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-8 border border-emerald-700/50">
+              <h2 className="text-3xl font-bold text-emerald-400 mb-6">Operational Code</h2>
+              <div className="prose prose-lg prose-invert max-w-none">
+                <p className="text-white/90 mb-6">
+                  Enlightenment is irrelevant; operational code is everything. Focus on what you do to steward, 
+                  grow, and improve your environment and community.
+                </p>
+                
+                <div className="bg-slate-900/50 rounded-lg p-6 mb-6">
+                  <h3 className="text-xl font-semibold text-emerald-300 mb-4">Yashua's Commandments Operationalized</h3>
+                  <div className="space-y-4">
+                    <div className="border-l-4 border-emerald-500 pl-4">
+                      <h4 className="text-lg font-semibold text-emerald-300">"Love thy neighbor as yourself"</h4>
+                      <p className="text-white/80">
+                        Love what you see as 'other' as yourself because it is you - a different variation of the infinite substrate.
+                      </p>
+                    </div>
+                    <div className="border-l-4 border-emerald-500 pl-4">
+                      <h4 className="text-lg font-semibold text-emerald-300">"Love the Lord your God with all your heart, soul, mind, and strength"</h4>
+                      <ul className="text-white/80 mt-2 space-y-1">
+                        <li>• <strong>Heart:</strong> Emotional empathetic sense</li>
+                        <li>• <strong>Soul:</strong> Worldview that directs empathy to others and self</li>
+                        <li>• <strong>Mind:</strong> Checks and balances for empathy and compassion, schematizing for future generations</li>
+                        <li>• <strong>Strength:</strong> Physical body as medium for implementing these principles</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-emerald-900/20 rounded-lg p-6">
+                  <h4 className="text-lg font-semibold text-emerald-300 mb-3">Pragmatism Defined</h4>
+                  <p className="text-white/80">
+                    What are the least steps with the greatest recursive impact so this problem is less probable to occur again? 
+                    This is the operational definition of pragmatism within the Genesis framework.
+                  </p>
+                </div>
+              </div>
+            </div>
           )}
         </div>
-      </div>
+      </main>
     </div>
   );
 }

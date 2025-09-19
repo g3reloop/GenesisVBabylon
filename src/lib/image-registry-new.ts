@@ -435,3 +435,4 @@ export const getSectionDisplayName = (section: ImageMetadata['section']): string
   return sectionNames[section];
 };
 
+

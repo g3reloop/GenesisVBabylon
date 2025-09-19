@@ -135,3 +135,4 @@ fs.writeFileSync(
 
 console.log('\nCategorization complete! Results saved to categorized-images.json');
 
+
