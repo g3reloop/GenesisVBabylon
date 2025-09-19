@@ -39,7 +39,7 @@ export default function GenesisProtocol() {
               <div className="glass-container rounded-lg p-6">
                 <h3 className="text-xl font-semibold text-green-400 mb-4">Operational Reality</h3>
                 <p className="text-white/90 mb-4">
-                  The platform doesn't oppose Babylon—it builds a superior parallel system that makes Babylon irrelevant through operational superiority. GenesisRELOOP.com is the first working demonstration of:
+                  The platform doesn't oppose Babylon—it builds a superior parallel system that makes Babylon irrelevant through operational superiority. genesisreloop.com is the first working demonstration of:
                 </p>
                 <ul className="space-y-2 text-sm text-white/80">
                   <li>• Verified Value Creation through waste transformation</li>

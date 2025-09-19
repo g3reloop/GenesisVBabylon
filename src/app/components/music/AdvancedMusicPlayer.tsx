@@ -42,6 +42,8 @@ interface AdvancedMusicPlayerProps {
   currentLyricLine: string;
   skin: string;
   onSkinChange: (skin: string) => void;
+  isCollapsed: boolean;
+  onToggleCollapse: () => void;
 }
 
 export default function AdvancedMusicPlayer({
@@ -73,6 +75,8 @@ export default function AdvancedMusicPlayer({
   currentLyricLine,
   skin,
   onSkinChange,
+  isCollapsed,
+  onToggleCollapse,
 }: AdvancedMusicPlayerProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
@@ -199,6 +203,38 @@ export default function AdvancedMusicPlayer({
   const progressPercentage = duration ? (currentTime / duration) * 100 : 0;
 
   if (!currentSong) return null;
+
+  // If collapsed, show only a small toggle button
+  if (isCollapsed) {
+    return (
+      <>
+        {/* Collapsed Toggle Button */}
+        <button
+          onClick={onToggleCollapse}
+          className="fixed bottom-4 right-4 z-50 w-14 h-14 bg-emerald-900/20 backdrop-blur-xl border border-emerald-400/30 rounded-full shadow-2xl hover:bg-emerald-800/30 transition-all duration-300 flex items-center justify-center group"
+          aria-label="Show music player"
+        >
+          <div className="relative w-8 h-8">
+            <img
+              src={currentSong.coverArt}
+              alt={`${currentSong.songName} cover art`}
+              width={32}
+              height={32}
+              className="object-cover w-full h-full rounded-full"
+              onError={(e) => {
+                e.currentTarget.src = '/images/cover-art/recursive-memetic-weapons-1.png';
+              }}
+            />
+            {isPlaying && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+              </div>
+            )}
+          </div>
+        </button>
+      </>
+    );
+  }
 
   return (
     <div 
@@ -343,15 +379,25 @@ export default function AdvancedMusicPlayer({
               </svg>
             </button>
             
-            <button
-              onClick={onFullscreenToggle}
-              className="p-1 sm:p-2 text-emerald-300 hover:text-white transition-colors mobile-tap-target"
-              aria-label="Toggle fullscreen"
-            >
-              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
-              </svg>
-            </button>
+                <button
+                  onClick={onFullscreenToggle}
+                  className="p-1 sm:p-2 text-emerald-300 hover:text-white transition-colors mobile-tap-target"
+                  aria-label="Toggle fullscreen"
+                >
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+                  </svg>
+                </button>
+
+                <button
+                  onClick={onToggleCollapse}
+                  className="p-1 sm:p-2 text-emerald-300 hover:text-white transition-colors mobile-tap-target"
+                  aria-label="Collapse music player"
+                >
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7"/>
+                  </svg>
+                </button>
           </div>
         </div>
 

@@ -22,9 +22,9 @@ export default function Home() {
             </p>
             
             <div className="bg-green-900/40 p-6 rounded-lg border border-green-400/30 backdrop-blur-sm mb-8">
-              <h2 className="text-2xl font-bold text-green-400 mb-4">GenesisRELOOP.com: The First Operational Implementation</h2>
+              <h2 className="text-2xl font-bold text-green-400 mb-4">genesisreloop.com: The First Operational Implementation</h2>
               <p className="text-white/90 mb-4">
-                While Babylon's Corrupted Recursive Loops (CRLs) continue their inevitable collapse, GenesisRELOOP.com represents the first working implementation of the Genesis Stabilized Recursive Loop (SRL) economy. This platform is not conceptual—it's engineered, designed, and ready for deployment as the seed from which the Genesis forest will grow.
+                While Babylon's Corrupted Recursive Loops (CRLs) continue their inevitable collapse, genesisreloop.com represents the first working implementation of the Genesis Stabilized Recursive Loop (SRL) economy. This platform is not conceptual—it's engineered, designed, and ready for deployment as the seed from which the Genesis forest will grow.
               </p>
               <a 
                 href="https://genesisreloop.com" 

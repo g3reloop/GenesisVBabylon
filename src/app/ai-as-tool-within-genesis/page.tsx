@@ -30,7 +30,7 @@ export default function AIAsToolWithinGenesis() {
                   rel="noopener noreferrer" 
                   className="text-green-400 hover:text-green-300 font-semibold underline"
                 >
-                  GenesisRELOOP.com
+                  genesisreloop.com
                 </a> represents the first functional implementation of the Genesis SRL (Stabilized Recursive Loop) economy. 
                 Unlike conceptual frameworks, this platform has complete architecture designed for immediate deployment that 
                 transforms waste streams into verified value creation through a closed-loop system.
@@ -65,7 +65,7 @@ export default function AIAsToolWithinGenesis() {
 
             <div className="bg-blue-900/20 p-6 rounded-lg border border-blue-400/30 backdrop-blur-sm">
               <p className="text-blue-200 text-sm italic">
-                <strong>Operational Reality:</strong> GenesisRELOOP.com demonstrates that AI is not replacing human labor but optimizing processes to eliminate bureaucracy and valueless jobs. The platform proves that waste-to-energy transformation can be handled through verified value creation metrics rather than Babylon's extraction logic. This isn't a prototype—it's the first operational node in the Genesis parallel civilization.
+                <strong>Operational Reality:</strong> genesisreloop.com demonstrates that AI is not replacing human labor but optimizing processes to eliminate bureaucracy and valueless jobs. The platform proves that waste-to-energy transformation can be handled through verified value creation metrics rather than Babylon's extraction logic. This isn't a prototype—it's the first operational node in the Genesis parallel civilization.
               </p>
             </div>
           </GlassCard>

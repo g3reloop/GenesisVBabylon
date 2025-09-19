@@ -122,7 +122,7 @@ Pragmat placing,
 We not dogs ordaining,
 PCG3
 That's the code I'm playing`,
-    audioFile: "/audio/G3PP - EM - SoundLoadMate.com.mp3",
+    audioFile: "/audio/Cry's & Crosses - EM - SoundLoadMate.com.mp3",
     coverArt: "/images/cover-art/crys-crosses-cover.png"
   },
   {
@@ -217,7 +217,7 @@ Please do not exit left,
 The rise is our only step,
 G3 beat the Saturn step,
 That's the pattern seen through our eclect`,
-    audioFile: "/audio/G3PP - EM - SoundLoadMate.com.mp3",
+    audioFile: "/audio/G3 Saturn Step - EM - SoundLoadMate.com.mp3",
     coverArt: "/images/cover-art/g3-saturn-step-cover.png"
   },
   {
@@ -291,7 +291,7 @@ We created the loop,
 It's the makers reproof,
 Break the cages and suits,
 Take em all on a loop`,
-    audioFile: "/audio/G3PP - EM - SoundLoadMate.com.mp3",
+    audioFile: "/audio/Protocol_ HXH - EM - SoundLoadMate.com.mp3",
     coverArt: "/images/cover-art/hxh-cover.png"
   },
   {
@@ -386,7 +386,7 @@ Just loop the loop,
 And you build repute,
 G3 is your maker suit,
 Breaks out any cage and you see repute`,
-    audioFile: "/audio/G3PP - EM - SoundLoadMate.com.mp3",
+    audioFile: "/audio/Protocol_ LoopTheLoop - EM - SoundLoadMate.com.mp3",
     coverArt: "/images/cover-art/looptheloop-cover.png"
   },
   {
@@ -455,7 +455,7 @@ I think they lack compute,
 They're in a backwards loop,
 It's only you that can collapse your loops
 I'm just speaking very practical X2`,
-    audioFile: "/audio/G3PP - EM - SoundLoadMate.com.mp3",
+    audioFile: "/audio/Protocol_ LoopMind_小恐怖 - EM - SoundLoadMate.com.mp3",
     coverArt: "/images/cover-art/loopmind-cover.png"
   },
   {
@@ -571,7 +571,7 @@ Pragmat placing,
 We not dogs ordaining,
 PCG3
 That's the code I'm playing`,
-    audioFile: "/audio/G3PP - EM - SoundLoadMate.com.mp3",
+    audioFile: "/audio/PCG3 - EM - SoundLoadMate.com.mp3",
     coverArt: "/images/cover-art/pcg3-cover.png"
   },
   {
@@ -935,7 +935,7 @@ Cook and scramble,
 There is no pre-amble,
 G3PP,
 No ontological tangles,`,
-    audioFile: "/audio/G3PP - EM - SoundLoadMate.com.mp3",
+    audioFile: "/audio/Unclenching The White Grasp - EM - SoundLoadMate.com.mp3",
     coverArt: "/images/cover-art/unclenching-white-grasp-cover.png"
   },
   {
@@ -1033,7 +1033,7 @@ We'll just bun it up quick,
 PM,
 BPM,
 Creed been sent,`,
-    audioFile: "/audio/G3PP - EM - SoundLoadMate.com.mp3",
+    audioFile: "/audio/Memetic Archive_ Aimless Routes Meet G3 Bout - EM - SoundLoadMate.com.mp3",
     coverArt: "/images/cover-art/memetic-archive-cover.png"
   },
   {
@@ -1140,7 +1140,7 @@ And for you and for you,
 And for you and for you,
 Its G3 in the suit,
 Build your makers repute!`,
-    audioFile: "/audio/G3PP - EM - SoundLoadMate.com.mp3",
+    audioFile: "/audio/Reloop Red Leash - EM - SoundLoadMate.com.mp3",
     coverArt: "/images/cover-art/reloop-red-leash-cover.png"
   },
   {
@@ -1230,7 +1230,7 @@ Lay Genesis lockstep,
 I do not hold with baited breath,
 G3 Genesis will see to it that Babylon is dead,
 And in its place is our stead`,
-    audioFile: "/audio/G3PP - EM - SoundLoadMate.com.mp3",
+    audioFile: "/audio/The Beacon - EM - SoundLoadMate.com.mp3",
     coverArt: "/images/cover-art/the-beacon-cover.png"
   }
 ];

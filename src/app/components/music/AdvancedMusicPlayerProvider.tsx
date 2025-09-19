@@ -46,6 +46,8 @@ interface AdvancedMusicPlayerContextType {
   currentLyricLine: string;
   skin: string;
   setSkin: (skin: string) => void;
+  isCollapsed: boolean;
+  toggleCollapse: () => void;
   
   // Playlist Management
   onSongReorder: (fromIndex: number, toIndex: number) => void;
@@ -88,8 +90,12 @@ export function AdvancedMusicPlayerProvider({ songs, children }: AdvancedMusicPl
   const [showLyrics, setShowLyrics] = useState(false);
   const [currentLyricLine, setCurrentLyricLine] = useState('');
   const [skin, setSkin] = useState('genesis');
+  const [isCollapsed, setIsCollapsed] = useState(false);
   
   const audioRef = useRef<HTMLAudioElement>(null);
+
+  // Toggle collapse function
+  const toggleCollapse = useCallback(() => setIsCollapsed(prev => !prev), []);
 
   // Sort songs by song number
   const sortedSongs = [...playlistSongs].sort((a, b) => a.songNumber - b.songNumber);
@@ -376,6 +382,8 @@ export function AdvancedMusicPlayerProvider({ songs, children }: AdvancedMusicPl
     currentLyricLine,
     skin,
     setSkin,
+    isCollapsed,
+    toggleCollapse,
     
     // Playlist Management
     onSongReorder,
@@ -426,6 +434,8 @@ export function AdvancedMusicPlayerProvider({ songs, children }: AdvancedMusicPl
         currentLyricLine={currentLyricLine}
         skin={skin}
         onSkinChange={setSkin}
+        isCollapsed={isCollapsed}
+        onToggleCollapse={toggleCollapse}
       />
     </AdvancedMusicPlayerContext.Provider>
   );
