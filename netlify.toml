@@ -8,6 +8,68 @@
   NEXT_PUBLIC_SUPABASE_URL = "your-supabase-url"
   NEXT_PUBLIC_SUPABASE_ANON_KEY = "your-supabase-anon-key"
 
+# Handle client-side routing for Next.js static export
+[[redirects]]
+  from = "/civilizational-ontology"
+  to = "/civilizational-ontology/"
+  status = 301
+
+[[redirects]]
+  from = "/civilizational-history"
+  to = "/civilizational-history/"
+  status = 301
+
+[[redirects]]
+  from = "/surgical-analysis"
+  to = "/surgical-analysis/"
+  status = 301
+
+[[redirects]]
+  from = "/collapse-protocol"
+  to = "/collapse-protocol/"
+  status = 301
+
+[[redirects]]
+  from = "/ai-as-tool-within-genesis"
+  to = "/ai-as-tool-within-genesis/"
+  status = 301
+
+[[redirects]]
+  from = "/genesis-protocol"
+  to = "/genesis-protocol/"
+  status = 301
+
+[[redirects]]
+  from = "/recursive-memetic-weapons"
+  to = "/recursive-memetic-weapons/"
+  status = 301
+
+[[redirects]]
+  from = "/esoteric-systems"
+  to = "/esoteric-systems/"
+  status = 301
+
+[[redirects]]
+  from = "/recursive-fractal-growth"
+  to = "/recursive-fractal-growth/"
+  status = 301
+
+[[redirects]]
+  from = "/why-genesis-wins"
+  to = "/why-genesis-wins/"
+  status = 301
+
+[[redirects]]
+  from = "/gallery"
+  to = "/gallery/"
+  status = 301
+
+[[redirects]]
+  from = "/rmw-discography"
+  to = "/rmw-discography/"
+  status = 301
+
+# Fallback for SPA routing
 [[redirects]]
   from = "/*"
   to = "/index.html"

@@ -114,13 +114,41 @@ export function AdvancedMusicPlayerProvider({ songs, children }: AdvancedMusicPl
     }
   }, [searchTerm, sortedSongs]);
 
-  // Auto-play first song on load
+  // Initialize current song with persistence
   useEffect(() => {
     if (songs.length > 0 && !currentSong) {
-      setCurrentSong(songs[0]);
+      let initialSong = songs[0]; // Default to first song
+      
+      // Try to load from localStorage
+      if (typeof window !== 'undefined') {
+        const storedSongNumber = localStorage.getItem('lastPlayedSongNumber');
+        if (storedSongNumber) {
+          const foundSong = songs.find(song => song.songNumber === parseInt(storedSongNumber, 10));
+          if (foundSong) {
+            initialSong = foundSong;
+          }
+        } else {
+          // If no stored song and on home page, start with PCG3
+          if (window.location.pathname === '/') {
+            const pcg3Song = songs.find(song => song.songName === 'PCG3');
+            if (pcg3Song) {
+              initialSong = pcg3Song;
+            }
+          }
+        }
+      }
+      
+      setCurrentSong(initialSong);
       setIsPlaying(true);
     }
   }, [songs, currentSong]);
+
+  // Persist current song to localStorage
+  useEffect(() => {
+    if (currentSong && typeof window !== 'undefined') {
+      localStorage.setItem('lastPlayedSongNumber', currentSong.songNumber.toString());
+    }
+  }, [currentSong]);
 
   const playSong = (song: Song) => {
     setCurrentSong(song);
