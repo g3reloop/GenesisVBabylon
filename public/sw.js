@@ -1,4 +1,4 @@
-const CACHE_NAME = 'genesis-v-babylon-v1.0.0';
+const CACHE_NAME = 'genesis-v-babylon-v1.0.1';
 const urlsToCache = [
   '/',
   '/ontology',
@@ -20,6 +20,7 @@ const urlsToCache = [
 
 // Install event - cache resources
 self.addEventListener('install', (event) => {
+  console.log('Service Worker installing...');
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
@@ -30,48 +31,12 @@ self.addEventListener('install', (event) => {
         console.log('Cache install failed:', error);
       })
   );
-});
-
-// Fetch event - serve from cache when offline
-self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        // Return cached version or fetch from network
-        if (response) {
-          return response;
-        }
-        
-        // Clone the request
-        const fetchRequest = event.request.clone();
-        
-        return fetch(fetchRequest).then((response) => {
-          // Check if valid response
-          if (!response || response.status !== 200 || response.type !== 'basic') {
-            return response;
-          }
-          
-          // Clone the response
-          const responseToCache = response.clone();
-          
-          caches.open(CACHE_NAME)
-            .then((cache) => {
-              cache.put(event.request, responseToCache);
-            });
-          
-          return response;
-        }).catch(() => {
-          // Return offline page for navigation requests
-          if (event.request.destination === 'document') {
-            return caches.match('/');
-          }
-        });
-      })
-  );
+  self.skipWaiting();
 });
 
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
+  console.log('Service Worker activating...');
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
@@ -84,16 +49,57 @@ self.addEventListener('activate', (event) => {
       );
     })
   );
+  self.clients.claim();
 });
 
-// Background sync for offline actions
-self.addEventListener('sync', (event) => {
-  if (event.tag === 'background-sync') {
-    event.waitUntil(
-      // Handle background sync tasks
-      console.log('Background sync triggered')
-    );
+// Fetch event - serve from cache when offline
+self.addEventListener('fetch', (event) => {
+  // Skip non-GET requests
+  if (event.request.method !== 'GET') {
+    return;
   }
+
+  // Skip chrome-extension and other non-http requests
+  if (!event.request.url.startsWith('http')) {
+    return;
+  }
+
+  event.respondWith(
+    caches.match(event.request)
+      .then((response) => {
+        // Return cached version if available
+        if (response) {
+          return response;
+        }
+        
+        // Fetch from network
+        return fetch(event.request)
+          .then((response) => {
+            // Don't cache non-successful responses
+            if (!response || response.status !== 200 || response.type !== 'basic') {
+              return response;
+            }
+            
+            // Clone the response for caching
+            const responseToCache = response.clone();
+            
+            caches.open(CACHE_NAME)
+              .then((cache) => {
+                cache.put(event.request, responseToCache);
+              });
+            
+            return response;
+          })
+          .catch(() => {
+            // Return offline page for navigation requests
+            if (event.request.destination === 'document') {
+              return caches.match('/');
+            }
+            // Return a basic response for other requests
+            return new Response('Offline', { status: 503 });
+          });
+      })
+  );
 });
 
 // Background music support
@@ -103,7 +109,6 @@ self.addEventListener('message', (event) => {
   }
   
   if (event.data && event.data.type === 'BACKGROUND_MUSIC') {
-    // Handle background music requests
     console.log('Background music request:', event.data);
   }
 });
