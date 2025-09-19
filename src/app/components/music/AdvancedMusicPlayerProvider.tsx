@@ -331,11 +331,9 @@ export function AdvancedMusicPlayerProvider({ songs, children }: AdvancedMusicPl
     };
   }, [currentSong, isRepeating, playNext]);
 
-  // Update audio source when song changes
+  // Update audio source when song changes - optimized for performance
   useEffect(() => {
     if (audioRef.current && currentSong) {
-      console.log('Loading new song:', currentSong.songName, 'from:', currentSong.audioFile);
-      
       // Stop current audio before changing source
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
@@ -344,35 +342,34 @@ export function AdvancedMusicPlayerProvider({ songs, children }: AdvancedMusicPl
       setDuration(0);
       setCurrentTime(0);
       
+      // Use optimized audio file if available
+      const optimizedFile = currentSong.audioFile.replace('/audio/', '/audio/compressed/').replace('.mp3', '_96k.mp3');
+      const audioSrc = optimizedFile;
+      
       // Set new source
-      audioRef.current.src = currentSong.audioFile;
+      audioRef.current.src = audioSrc;
+      
+      // Set preload to metadata only to reduce initial load
+      audioRef.current.preload = 'metadata';
       
       // Force load the audio metadata
       audioRef.current.load();
       
-      // Add error handling for audio loading
-      audioRef.current.addEventListener('error', (e) => {
-        console.error('Audio loading error:', e);
-        console.error('Failed to load:', currentSong.audioFile);
-      });
-      
-      // Try to load metadata immediately
-      if (audioRef.current.readyState >= 1) {
-        console.log('Audio already has metadata, duration:', audioRef.current.duration);
-        if (!isNaN(audioRef.current.duration) && audioRef.current.duration > 0) {
-          setDuration(audioRef.current.duration);
-        }
-      }
-      
-      // Fallback: try to get duration after a short delay
-      setTimeout(() => {
+      // Optimized duration detection
+      const handleLoadedMetadata = () => {
         if (audioRef.current && !isNaN(audioRef.current.duration) && audioRef.current.duration > 0) {
-          console.log('Fallback duration detection:', audioRef.current.duration);
           setDuration(audioRef.current.duration);
-        } else {
-          console.warn('Audio duration not detected for:', currentSong.songName);
         }
-      }, 500);
+      };
+      
+      audioRef.current.addEventListener('loadedmetadata', handleLoadedMetadata, { once: true });
+      
+      // Cleanup function
+      return () => {
+        if (audioRef.current) {
+          audioRef.current.removeEventListener('loadedmetadata', handleLoadedMetadata);
+        }
+      };
     }
   }, [currentSong]);
 

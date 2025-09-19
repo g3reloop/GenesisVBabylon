@@ -270,3 +270,4 @@ Object.keys(categorizedImages).sort().forEach(category => {
 console.log(`\n🎯 Total: ${files.length} images across ${Object.keys(categorizedImages).length} sections`);
 
 
+

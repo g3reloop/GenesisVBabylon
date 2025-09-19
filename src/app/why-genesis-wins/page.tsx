@@ -391,7 +391,7 @@ export default function WhyGenesisWins() {
           trainingTime: "8-10 weeks"
         }
       ],
-      trainingProtocol: [
+      replicationProtocol: [
         "Step 1: Complete theoretical training in all six competencies",
         "Step 2: Complete practical verification in 3+ contexts per competency",
         "Step 3: Pass certification exam with 80%+ accuracy",

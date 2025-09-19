@@ -5,6 +5,10 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  // Performance optimizations
+  compress: true,
+  poweredByHeader: false,
+  generateEtags: false,
   images: {
     unoptimized: true,
     domains: ['localhost'],
@@ -16,6 +20,35 @@ const nextConfig = {
         pathname: '/images/**',
       },
     ],
+    formats: ['image/webp', 'image/avif'],
+    minimumCacheTTL: 31536000, // 1 year
+  },
+  // Bundle optimization
+  experimental: {
+    optimizePackageImports: ['react', 'react-dom'],
+  },
+  // Webpack optimizations
+  webpack: (config, { dev, isServer }) => {
+    // Optimize bundle size
+    if (!dev && !isServer) {
+      config.optimization.splitChunks = {
+        chunks: 'all',
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+          },
+          music: {
+            test: /[\\/]components[\\/]music[\\/]/,
+            name: 'music',
+            chunks: 'all',
+          },
+        },
+      };
+    }
+    
+    return config;
   },
   // PWA configuration
   async headers() {

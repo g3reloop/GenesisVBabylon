@@ -4,16 +4,21 @@ import "./globals.css";
 import Navigation from "./components/Navigation";
 import { AdvancedMusicPlayerProvider } from "./components/music/AdvancedMusicPlayerProvider";
 import PWAInstaller from "./components/PWAInstaller";
+import PerformanceMonitor from "./components/PerformanceMonitor";
 import { songs } from "../lib/songs-data";
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+  display: 'swap', // Optimize font loading
+  preload: true,
 });
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
   subsets: ["latin"],
+  display: 'swap', // Optimize font loading
+  preload: true,
 });
 
 export const metadata: Metadata = {
@@ -58,6 +63,7 @@ export default function RootLayout({
                 <p>&copy; 2025 Genesis Parallel Civilisation: Genesis V Babylon</p>
               </footer>
               <PWAInstaller />
+              <PerformanceMonitor />
             </AdvancedMusicPlayerProvider>
       </body>
     </html>
