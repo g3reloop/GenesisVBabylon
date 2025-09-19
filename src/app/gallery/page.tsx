@@ -156,12 +156,14 @@ export default function GalleryPage() {
                   </div>
                 )}
                 
-                <Image
+                <img
                   src={image.src}
                   alt={image.alt}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
-                  sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw"
+                  className="object-cover transition-transform duration-500 group-hover:scale-110 w-full h-full"
+                  onError={(e) => {
+                    console.log('Gallery image failed to load:', image.src);
+                    e.currentTarget.src = '/images/sections/recursive-memetic-weapons-1.png';
+                  }}
                 />
                 
                 {/* Overlay Info */}

@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import { useAdvancedMusicPlayer } from './AdvancedMusicPlayerProvider';
 
 interface Song {
   songNumber: number;
@@ -23,6 +23,7 @@ interface SongCardProps {
 
 export default function SongCard({ song, isPlaying = false, onPlay, onPause }: SongCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const { playSong, currentSong, isPlaying: globalIsPlaying } = useAdvancedMusicPlayer();
 
   const toggleExpanded = () => {
     setIsExpanded(!isExpanded);
@@ -30,10 +31,12 @@ export default function SongCard({ song, isPlaying = false, onPlay, onPause }: S
 
   const handlePlayPause = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (isPlaying) {
+    if (currentSong?.songNumber === song.songNumber && globalIsPlaying) {
+      // Pause current song
       onPause?.();
     } else {
-      onPlay?.();
+      // Play this song
+      playSong(song);
     }
   };
 
@@ -103,12 +106,16 @@ export default function SongCard({ song, isPlaying = false, onPlay, onPause }: S
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-3">
             <div className="relative w-12 h-12 rounded-lg overflow-hidden">
-              <Image
+              <img
                 src={song.coverArt}
                 alt={`${song.songName} cover art`}
                 width={48}
                 height={48}
-                className="object-cover"
+                className="object-cover w-full h-full"
+                onError={(e) => {
+                  console.log('Image failed to load:', song.coverArt);
+                  e.currentTarget.src = '/images/cover-art/recursive-memetic-weapons-1.png';
+                }}
               />
             </div>
             <div>
@@ -123,9 +130,9 @@ export default function SongCard({ song, isPlaying = false, onPlay, onPause }: S
             <button
               onClick={handlePlayPause}
               className="w-10 h-10 rounded-full bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-400/50 flex items-center justify-center text-emerald-100 hover:text-emerald-300 transition-all duration-200 mobile-tap-target"
-              aria-label={isPlaying ? 'Pause' : 'Play'}
+              aria-label={currentSong?.songNumber === song.songNumber && globalIsPlaying ? 'Pause' : 'Play'}
             >
-              {isPlaying ? (
+              {currentSong?.songNumber === song.songNumber && globalIsPlaying ? (
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
                 </svg>

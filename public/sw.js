@@ -96,6 +96,18 @@ self.addEventListener('sync', (event) => {
   }
 });
 
+// Background music support
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+  
+  if (event.data && event.data.type === 'BACKGROUND_MUSIC') {
+    // Handle background music requests
+    console.log('Background music request:', event.data);
+  }
+});
+
 // Push notifications (for future use)
 self.addEventListener('push', (event) => {
   const options = {

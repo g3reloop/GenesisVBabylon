@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Montserrat } from "next/font/google";
 import "./globals.css";
 import Navigation from "./components/Navigation";
-import { MusicPlayerProvider } from "./components/PersistentMusicPlayer";
+import { AdvancedMusicPlayerProvider } from "./components/music/AdvancedMusicPlayerProvider";
 import PWAInstaller from "./components/PWAInstaller";
 import { songs } from "../lib/songs-data";
 
@@ -49,7 +49,7 @@ export default function RootLayout({
       <body
             className={`${inter.variable} ${montserrat.variable} antialiased bg-emerald-900 text-emerald-50 font-sans`}
       >
-            <MusicPlayerProvider songs={songs}>
+            <AdvancedMusicPlayerProvider songs={songs}>
               <Navigation />
               <main className="min-h-screen">
                 {children}
@@ -58,7 +58,7 @@ export default function RootLayout({
                 <p>&copy; 2025 Genesis Parallel Civilisation: Genesis V Babylon</p>
               </footer>
               <PWAInstaller />
-            </MusicPlayerProvider>
+            </AdvancedMusicPlayerProvider>
       </body>
     </html>
   );

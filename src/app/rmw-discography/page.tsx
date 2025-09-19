@@ -4,11 +4,11 @@ import React from 'react';
 import DisclaimerBanner from '../components/DisclaimerBanner';
 import GlassCard from '../components/GlassCard';
 import SongCard from '../components/music/SongCard';
-import { useMusicPlayer } from '../components/PersistentMusicPlayer';
+import { useAdvancedMusicPlayer } from '../components/music/AdvancedMusicPlayerProvider';
 import { songs } from '../../lib/songs-data';
 
 export default function RMWDiscographyPage() {
-  const { playSong, currentSong, isPlaying } = useMusicPlayer();
+  const { playSong, currentSong, isPlaying } = useAdvancedMusicPlayer();
 
   const handlePlaySong = (song: typeof songs[0]) => {
     playSong(song);

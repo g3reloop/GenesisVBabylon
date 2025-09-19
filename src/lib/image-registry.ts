@@ -862,4 +862,4 @@ export const getSectionDisplayName = (section: ImageMetadata['section']): string
     'why-wins': 'Why Genesis Inevitably Wins'
   };
   return sectionNames[section];
-};
+}
