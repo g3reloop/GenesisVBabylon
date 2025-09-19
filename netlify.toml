@@ -5,6 +5,8 @@
 [build.environment]
   NODE_VERSION = "18"
   NPM_VERSION = "9"
+  NEXT_PUBLIC_SUPABASE_URL = "your-supabase-url"
+  NEXT_PUBLIC_SUPABASE_ANON_KEY = "your-supabase-anon-key"
 
 [[redirects]]
   from = "/*"
@@ -42,15 +44,14 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
-# Supabase integration
-[build.environment]
-  NEXT_PUBLIC_SUPABASE_URL = "your-supabase-url"
-  NEXT_PUBLIC_SUPABASE_ANON_KEY = "your-supabase-anon-key"
+# Additional configuration for static site
+[build.processing]
+  skip_processing = false
 
 # Form handling (for future contact forms)
-[[plugins]]
-  package = "@netlify/plugin-lighthouse"
+# [[plugins]]
+#   package = "@netlify/plugin-lighthouse"
 
 # Edge functions (for future API routes)
-[functions]
-  directory = "netlify/functions"
+# [functions]
+#   directory = "netlify/functions"
