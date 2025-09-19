@@ -145,3 +145,4 @@ For issues or questions:
 2. Review Netlify build logs
 3. Check Supabase logs
 4. Test locally with `npm run dev`
+

@@ -35,3 +35,4 @@ shortcutIcons.forEach(icon => {
 
 console.log('PWA icon generation complete!');
 console.log('Note: In production, replace placeholders with actual PNG icons converted from the Genesis logo SVG.');
+

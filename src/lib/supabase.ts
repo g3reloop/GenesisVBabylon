@@ -143,3 +143,4 @@ export const getUser = async (email: string) => {
     console.error('Error getting user:', error);
   }
 };
+

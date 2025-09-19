@@ -59,3 +59,4 @@ echo "  - package.json"
 echo "  - next.config.js"
 echo ""
 echo "🎵 Your advanced Spotify-like music player is ready to go!"
+
