@@ -387,6 +387,13 @@ export function AdvancedMusicPlayerProvider({ songs, children }: AdvancedMusicPl
     }
   }, [isPlaying]);
 
+  // Set volume when audio element is ready
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+    }
+  }, [volume]);
+
   // Handle background music when app is not visible
   useEffect(() => {
     const handleVisibilityChange = () => {
@@ -485,7 +492,6 @@ export function AdvancedMusicPlayerProvider({ songs, children }: AdvancedMusicPl
         crossOrigin="anonymous"
         playsInline
         webkit-playsinline="true"
-        volume={volume}
       />
       
       {/* Advanced Music Player */}
