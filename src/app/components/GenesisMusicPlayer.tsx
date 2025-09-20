@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 
 interface Track {
   id: number;
@@ -18,7 +18,7 @@ const GenesisMusicPlayer = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
 
   // RMW Discography tracks
-  const tracks: Track[] = [
+  const tracks: Track[] = useMemo(() => [
     { id: 1, name: "G3 Bedouin Blind Plays RSCC For Kronos' Eulogy", src: "/audio/G3 Bedouin Blind Plays RSCC For Kronos' Eulogy - ESM.mp3", duration: "4:39" },
     { id: 2, name: "G3 Saturn Step", src: "/audio/G3 Saturn Step - EM - SoundLoadMate.com.mp3", duration: "3:45" },
     { id: 3, name: "Protocol HXH", src: "/audio/Protocol_ HXH - EM - SoundLoadMate.com.mp3", duration: "2:30" },
@@ -31,7 +31,7 @@ const GenesisMusicPlayer = () => {
     { id: 10, name: "Reloop Red Leash", src: "/audio/Reloop Red Leash - EM - SoundLoadMate.com.mp3", duration: "4:30" },
     { id: 11, name: "The Beacon", src: "/audio/The Beacon - EM - SoundLoadMate.com.mp3", duration: "3:55" },
     { id: 12, name: "Genesis Finale", src: "/audio/G3 Bedouin Blind Plays RSCC For Kronos' Eulogy - ESM.mp3", duration: "4:39" }
-  ];
+  ], []);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -68,7 +68,7 @@ const GenesisMusicPlayer = () => {
     if (isPlaying) {
       audio.play();
     }
-  }, [currentTrack, tracks, isPlaying]);
+  }, [currentTrack, tracks]);
 
   const togglePlayPause = () => {
     const audio = audioRef.current;

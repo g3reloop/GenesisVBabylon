@@ -23,6 +23,7 @@ export default function PageWithBackground({
       {videoConfig && (
         <BackgroundVideo
           videoSrc={videoConfig.videoSrc}
+          fallbackImage={videoConfig.fallbackImage}
           sectionId={sectionId}
           priority={videoConfig.priority}
         />

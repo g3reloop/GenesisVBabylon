@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 
 interface SystemNode {
   id: string;
@@ -18,7 +18,7 @@ const SystemArchitectureDiagram: React.FC = () => {
   const [selectedNode, setSelectedNode] = useState<SystemNode | null>(null);
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
 
-  const systemNodes: SystemNode[] = [
+  const systemNodes: SystemNode[] = useMemo(() => [
     {
       id: 'recursive-seed',
       name: 'Recursive Seed',
@@ -99,7 +99,7 @@ const SystemArchitectureDiagram: React.FC = () => {
       description: 'Social cohesion breakdown realm - inequality destroying community bonds',
       metrics: ['Gini coefficient 0.85', '32% trust decline', '67% participation reduction']
     }
-  ];
+  ], []);
 
   useEffect(() => {
     if (!svgRef.current) return;
@@ -163,7 +163,7 @@ const SystemArchitectureDiagram: React.FC = () => {
       group.appendChild(text);
       svg.appendChild(group);
     });
-  }, [hoveredNode, systemNodes]);
+  }, [hoveredNode]);
 
   return (
     <div className="w-full">

@@ -62,7 +62,7 @@ export default function RootLayout({
               </main>
               <GenesisMusicPlayer />
               <footer className="bg-black/90 backdrop-blur-xl text-cloud-white text-center py-6 border-t border-electric-violet/30">
-                <p>© 2025 Genesis Parallel Civilisation: Genesis V Babylon</p>
+                <p>&copy; 2025 Genesis Parallel Civilisation: Genesis V Babylon</p>
               </footer>
               <PWAInstaller />
               <PerformanceMonitor />

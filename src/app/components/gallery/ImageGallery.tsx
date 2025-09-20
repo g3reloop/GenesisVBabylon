@@ -16,6 +16,7 @@ interface ImageGalleryProps {
 export default function ImageGallery({ 
   images, 
   title = "Visual Explorations", 
+  showSectionFilter = false,
   className = ""
 }: ImageGalleryProps) {
   const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -45,10 +46,12 @@ export default function ImageGallery({
     [emblaApi]
   );
 
-  const onSelect = useCallback((emblaApi: any) => {
-    setSelectedIndex(emblaApi.selectedScrollSnap());
-    setPrevBtnDisabled(!emblaApi.canScrollPrev());
-    setNextBtnDisabled(!emblaApi.canScrollNext());
+  const onSelect = useCallback((emblaApi: ReturnType<typeof useEmblaCarousel>[1]) => {
+    if (emblaApi) {
+      setSelectedIndex(emblaApi.selectedScrollSnap());
+      setPrevBtnDisabled(!emblaApi.canScrollPrev());
+      setNextBtnDisabled(!emblaApi.canScrollNext());
+    }
   }, []);
 
   const openPopup = (image: ImageMetadata) => {
@@ -135,7 +138,7 @@ export default function ImageGallery({
         {/* Carousel Viewport */}
         <div className="overflow-hidden" ref={emblaRef}>
           <div className="flex touch-pan-x touch-pinch-zoom">
-            {images.map((image) => (
+            {images.map((image, index) => (
               <div
                 key={image.id}
                 className="min-w-0 w-[85%] sm:w-[45%] md:w-[30%] lg:w-[23%] xl:w-[19%] pl-4 first:pl-0"

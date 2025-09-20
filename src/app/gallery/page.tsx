@@ -156,11 +156,9 @@ export default function GalleryPage() {
                   </div>
                 )}
                 
-                <Image
+                <img
                   src={image.src}
                   alt={image.alt}
-                  width={400}
-                  height={300}
                   className="object-cover transition-transform duration-500 group-hover:scale-110 w-full h-full"
                   onError={(e) => {
                     console.log('Gallery image failed to load:', image.src);

@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useAdvancedMusicPlayer } from './AdvancedMusicPlayerProvider';
 
 interface Song {
@@ -22,7 +21,7 @@ interface SongCardProps {
   onPause?: () => void;
 }
 
-export default function SongCard({ song }: SongCardProps) {
+export default function SongCard({ song, isPlaying = false, onPlay, onPause }: SongCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const { playSong, currentSong, isPlaying: globalIsPlaying } = useAdvancedMusicPlayer();
 
@@ -33,8 +32,8 @@ export default function SongCard({ song }: SongCardProps) {
   const handlePlayPause = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (currentSong?.songNumber === song.songNumber && globalIsPlaying) {
-      // Pause current song - handled by the music player context
-      // The music player will handle pause/play logic
+      // Pause current song
+      onPause?.();
     } else {
       // Play this song
       playSong(song);
@@ -107,7 +106,7 @@ export default function SongCard({ song }: SongCardProps) {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-3">
             <div className="relative w-12 h-12 rounded-lg overflow-hidden">
-              <Image
+              <img
                 src={song.coverArt}
                 alt={`${song.songName} cover art`}
                 width={48}

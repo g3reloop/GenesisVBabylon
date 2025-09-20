@@ -1,10 +1,12 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import FallbackVideo from './FallbackVideo';
 
 interface BackgroundVideoProps {
   videoSrc: string;
+  fallbackImage?: string;
   sectionId: string;
   className?: string;
   priority?: boolean;
@@ -12,6 +14,7 @@ interface BackgroundVideoProps {
 
 export default function BackgroundVideo({
   videoSrc,
+  fallbackImage = '/images/backgrounds/genesis-default-bg.jpg',
   sectionId,
   className = '',
   priority = false
@@ -34,7 +37,7 @@ export default function BackgroundVideo({
           setIsVideoSupported(true);
           setIsVideoLoaded(true);
         }
-      } catch {
+      } catch (error) {
         console.log('Video autoplay not supported, using fallback image');
         setIsVideoSupported(false);
         setHasError(true);

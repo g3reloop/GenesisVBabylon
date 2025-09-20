@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
 
 interface Song {
@@ -215,7 +215,7 @@ export default function AdvancedMusicPlayer({
           aria-label="Show music player"
         >
           <div className="relative w-8 h-8">
-            <Image
+            <img
               src={currentSong.coverArt}
               alt={`${currentSong.songName} cover art`}
               width={32}
@@ -252,7 +252,7 @@ export default function AdvancedMusicPlayer({
           {/* Left: Song Info - Mobile Optimized */}
           <div className="flex items-center space-x-2 sm:space-x-4 min-w-0 flex-1">
             <div className="relative w-10 h-10 sm:w-14 sm:h-14 rounded-lg overflow-hidden flex-shrink-0">
-              <Image
+              <img
                 src={currentSong.coverArt}
                 alt={`${currentSong.songName} cover art`}
                 width={56}
@@ -467,7 +467,7 @@ export default function AdvancedMusicPlayer({
                     onClick={() => onSongSelect(song)}
                   >
                     <div className="relative w-10 h-10 rounded-lg overflow-hidden flex-shrink-0">
-                      <Image
+                      <img
                         src={song.coverArt}
                         alt={`${song.songName} cover art`}
                         width={40}
