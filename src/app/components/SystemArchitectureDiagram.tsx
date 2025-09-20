@@ -152,7 +152,7 @@ const SystemArchitectureDiagram: React.FC = () => {
       
       const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
       text.setAttribute('x', node.x.toString());
-      text.setAttribute('y', node.y + 5);
+      text.setAttribute('y', (node.y + 5).toString());
       text.setAttribute('text-anchor', 'middle');
       text.setAttribute('fill', '#ffffff');
       text.setAttribute('font-size', '10');
