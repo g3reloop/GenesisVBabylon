@@ -20,8 +20,8 @@ const GlassCard: React.FC<GlassCardProps> = ({
   ariaDescribedBy
 }) => {
   const baseClasses = fullScreen 
-    ? 'min-h-screen w-full bg-emerald-900/20 backdrop-blur-xl border border-emerald-400/30 rounded-none p-8 shadow-2xl'
-    : 'bg-emerald-900/20 backdrop-blur-xl border border-emerald-400/30 rounded-2xl p-6 shadow-2xl';
+    ? 'min-h-screen w-full bg-deep-black/40 backdrop-blur-xl border border-electric-violet/30 rounded-none p-8 shadow-2xl'
+    : 'bg-deep-black/40 backdrop-blur-xl border border-electric-violet/30 rounded-2xl p-6 shadow-2xl';
   
   return (
     <div 

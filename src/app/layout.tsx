@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   title: "Genesis Parallel Civilisation: Genesis V Babylon",
   description: "A complete civilizational ontology comparing Babylon's Corrupted Recursive Loops (CRLs) with Genesis' Stabilized Recursive Loops (SRLs).",
   manifest: "/manifest.json",
-  themeColor: "#10b981",
+  themeColor: "#7E60BF",
   viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
   appleWebApp: {
     capable: true,
