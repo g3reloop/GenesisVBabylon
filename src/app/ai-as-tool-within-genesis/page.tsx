@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import GlassCard from '../components/GlassCard';
+import ImageGallery from '../components/gallery/ImageGallery';
+import { getUnusedImagesBySection } from '@/lib/image-registry';
 
 interface JobTransformation {
   jobTitle: string;
@@ -550,6 +552,15 @@ Remember: You're not providing information—you're building the Genesis paralle
               </figure>
             </div>
           </GlassCard>
+
+          {/* Additional Visual Explorations Gallery */}
+          <div className="mt-16">
+            <ImageGallery 
+              images={getUnusedImagesBySection('ai')}
+              title="Additional Visual Explorations: AI as a Tool Within Genesis"
+              className="mt-8"
+            />
+          </div>
         </div>
       </div>
     </div>

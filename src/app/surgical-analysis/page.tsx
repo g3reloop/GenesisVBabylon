@@ -3,6 +3,8 @@ import GlassCard from '../components/GlassCard';
 import LazySection from '../components/LazySection';
 import SystemArchitectureDiagram from '../components/SystemArchitectureDiagram';
 import PageWithBackground from '../components/PageWithBackground';
+import ImageGallery from '../components/gallery/ImageGallery';
+import { getUnusedImagesBySection } from '@/lib/image-registry';
 
 export default function SurgicalAnalysis() {
   return (
@@ -415,6 +417,15 @@ export default function SurgicalAnalysis() {
               </div>
             </GlassCard>
           </LazySection>
+
+          {/* Additional Visual Explorations Gallery */}
+          <div className="mt-16">
+            <ImageGallery 
+              images={getUnusedImagesBySection('surgical-analysis')}
+              title="Additional Visual Explorations: Surgical Analysis"
+              className="mt-8"
+            />
+          </div>
         </div>
       </div>
     </PageWithBackground>

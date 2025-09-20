@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import GlassCard from '../components/GlassCard';
 import ImageGallery from '../components/gallery/ImageGallery';
-import { getImagesBySection } from '@/lib/image-registry';
+import { getUnusedImagesBySection } from '@/lib/image-registry';
 
 interface StructuralAdvantage {
   number: number;
@@ -60,7 +60,7 @@ interface NodeReplication {
 }
 
 export default function WhyGenesisWins() {
-  const unusedImages = getImagesBySection('why-wins', true);
+  const unusedImages = getUnusedImagesBySection('why-wins');
   const [selectedVisualization, setSelectedVisualization] = useState<string>('matrix');
   const [showCode, setShowCode] = useState<boolean>(false);
 

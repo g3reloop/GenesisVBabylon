@@ -4,11 +4,11 @@ import { useState } from 'react';
 import Image from 'next/image';
 import GlassCard from '../components/GlassCard';
 import ImageGallery from '../components/gallery/ImageGallery';
-import { getImagesBySection } from '@/lib/image-registry';
+import { getUnusedImagesBySection } from '@/lib/image-registry';
 import DisclaimerBanner from '../components/DisclaimerBanner';
 
 export default function EsotericSystems() {
-  const unusedImages = getImagesBySection('esoteric', true);
+  const unusedImages = getUnusedImagesBySection('esoteric');
   const [showVisualization, setShowVisualization] = useState(false);
 
   return (

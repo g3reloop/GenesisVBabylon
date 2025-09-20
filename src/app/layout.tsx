@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import { Inter, Montserrat } from "next/font/google";
-import "./globals.css";
-import GenesisNavigation from "./components/GenesisNavigation";
-import GenesisMusicPlayer from "./components/GenesisMusicPlayer";
-import { AdvancedMusicPlayerProvider } from "./components/music/AdvancedMusicPlayerProvider";
+import "./styles/globals.css";
+import Navigation from "./components/Navigation";
+import MusicPlayer from "./components/MusicPlayer";
 import PWAInstaller from "./components/PWAInstaller";
 import PerformanceMonitor from "./components/PerformanceMonitor";
-import { songs } from "../lib/songs-data";
+import { musicTracks } from "../lib/music-data";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -52,21 +51,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-            className={`${inter.variable} ${montserrat.variable} antialiased font-sans`}
-      >
-            <AdvancedMusicPlayerProvider songs={songs}>
-              <GenesisNavigation />
-              <main className="min-h-screen pt-16">
-                {children}
-              </main>
-              <GenesisMusicPlayer />
-              <footer className="bg-black/90 backdrop-blur-xl text-cloud-white text-center py-6 border-t border-electric-violet/30">
-                <p>&copy; 2025 Genesis Parallel Civilisation: Genesis V Babylon</p>
-              </footer>
-              <PWAInstaller />
-              <PerformanceMonitor />
-            </AdvancedMusicPlayerProvider>
+      <body className={`${inter.variable} ${montserrat.variable} antialiased font-sans`}>
+        <Navigation />
+        <main className="min-h-screen pt-20 pb-24">
+          {children}
+        </main>
+        <MusicPlayer tracks={musicTracks} autoplay={true} />
+        <footer className="glass-card text-center py-6 mx-4 mb-24">
+          <p className="text-white/80">&copy; 2025 Genesis Parallel Civilisation: Genesis V Babylon</p>
+        </footer>
+        <PWAInstaller />
+        <PerformanceMonitor />
       </body>
     </html>
   );

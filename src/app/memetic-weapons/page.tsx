@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import GlassCard from '../components/GlassCard';
 import ImageGallery from '../components/gallery/ImageGallery';
-import { getImagesBySection } from '@/lib/image-registry';
+import { getUnusedImagesBySection } from '@/lib/image-registry';
 
 interface MemeticSpore {
   id: string;
@@ -28,7 +28,7 @@ interface PureCollapseStep {
 }
 
 export default function MemeticWeapons() {
-  const unusedImages = getImagesBySection('memetics', true);
+  const unusedImages = getUnusedImagesBySection('memetics');
   const [selectedSpore, setSelectedSpore] = useState<number>(0);
   const [selectedStep, setSelectedStep] = useState<number>(0);
   const [showVisualization, setShowVisualization] = useState(false);

@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import GlassCard from '../components/GlassCard';
+import ImageGallery from '../components/gallery/ImageGallery';
+import { getUnusedImagesBySection } from '@/lib/image-registry';
 
 interface ProtocolComponent {
   number: number;
@@ -539,6 +541,15 @@ export function createRecursiveVisualization(containerId, data) {
               </figure>
             </div>
           </GlassCard>
+
+          {/* Additional Visual Explorations Gallery */}
+          <div className="mt-16">
+            <ImageGallery 
+              images={getUnusedImagesBySection('genesis-protocol')}
+              title="Additional Visual Explorations: Genesis SRL Protocol"
+              className="mt-8"
+            />
+          </div>
         </div>
       </div>
     </div>

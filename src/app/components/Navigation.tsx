@@ -26,8 +26,8 @@ const Navigation = () => {
   ];
 
   return (
-    <header className="bg-emerald-900/95 backdrop-blur-sm sticky top-0 z-50 border-b border-emerald-700/50">
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <header className="glass-card sticky top-0 z-50 border-b border-primary/20">
+      <nav className="container">
         <div className="flex justify-between items-center py-4">
           <Link 
             href="/" 
@@ -42,10 +42,10 @@ const Navigation = () => {
                 className="transition-transform duration-300 group-hover:scale-110"
               />
             </div>
-            <span className="text-lg font-bold text-emerald-400 hover:text-emerald-300 transition-colors font-montserrat uppercase tracking-wide hidden sm:block">
+            <span className="text-lg font-bold text-primary hover:text-primary/80 transition-colors font-montserrat uppercase tracking-wide hidden sm:block text-glow">
               Genesis Parallel Civilisation
             </span>
-            <span className="text-lg font-bold text-emerald-400 hover:text-emerald-300 transition-colors font-montserrat uppercase tracking-wide block sm:hidden">
+            <span className="text-lg font-bold text-primary hover:text-primary/80 transition-colors font-montserrat uppercase tracking-wide block sm:hidden text-glow">
               Genesis
             </span>
           </Link>
@@ -57,13 +57,13 @@ const Navigation = () => {
                 href={item.href}
                 className={`text-sm font-medium transition-colors relative mobile-tap-target ${
                   pathname === item.href
-                    ? 'text-emerald-400'
-                    : 'text-emerald-100 hover:text-emerald-400'
+                    ? 'text-primary'
+                    : 'text-white/80 hover:text-primary'
                 }`}
               >
                 {item.label}
                 {pathname === item.href && (
-                  <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-emerald-400" />
+                  <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary" />
                 )}
               </Link>
             ))}
@@ -73,7 +73,7 @@ const Navigation = () => {
           <div className="lg:hidden">
             <button 
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-emerald-100 hover:text-emerald-400 mobile-tap-target p-2 transition-colors"
+              className="text-white/80 hover:text-primary mobile-tap-target p-2 transition-colors"
               aria-label="Toggle mobile menu"
             >
               {isMobileMenuOpen ? (
@@ -91,7 +91,7 @@ const Navigation = () => {
 
         {/* Mobile menu */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden bg-emerald-900/95 backdrop-blur-sm border-t border-emerald-700/50">
+          <div className="lg:hidden glass-card border-t border-primary/20">
             <div className="px-2 pt-2 pb-3 space-y-1 max-h-96 overflow-y-auto">
               {navItems.map((item) => (
                 <Link
@@ -100,8 +100,8 @@ const Navigation = () => {
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={`block px-3 py-2 text-base font-medium transition-colors mobile-tap-target rounded-md ${
                     pathname === item.href
-                      ? 'text-emerald-400 bg-emerald-800/50'
-                      : 'text-emerald-100 hover:text-emerald-400 hover:bg-emerald-800/30'
+                      ? 'text-primary bg-primary/20'
+                      : 'text-white/80 hover:text-primary hover:bg-primary/10'
                   }`}
                 >
                   {item.label}

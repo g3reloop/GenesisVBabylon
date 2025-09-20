@@ -1,212 +1,207 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import Image from 'next/image';
-import { imageRegistry, getAllSections, getSectionDisplayName, ImageMetadata } from '@/lib/image-registry';
-import DisclaimerBanner from '../components/DisclaimerBanner';
 import GlassCard from '../components/GlassCard';
-import EnhancedImagePopup from '../components/gallery/EnhancedImagePopup';
+import { getAllImages, getSectionDisplayName, ImageMetadata } from '@/lib/image-registry';
+
+const sections = [
+  'ontology',
+  'history', 
+  'surgical-analysis',
+  'collapse-protocol',
+  'ai',
+  'genesis-protocol',
+  'memetics',
+  'esoteric',
+  'growth',
+  'why-wins',
+  'platform'
+];
 
 export default function GalleryPage() {
-  const [selectedSection, setSelectedSection] = useState<ImageMetadata['section'] | 'all'>('all');
-  const [lightboxImage, setLightboxImage] = useState<ImageMetadata | null>(null);
+  const [selectedSection, setSelectedSection] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedImage, setSelectedImage] = useState<ImageMetadata | null>(null);
 
-  const sections = getAllSections();
+  const allImages = getAllImages();
 
   const filteredImages = useMemo(() => {
-    let images = selectedSection === 'all' 
-      ? imageRegistry 
-      : imageRegistry.filter(img => img.section === selectedSection);
+    let filtered = allImages;
+
+    if (selectedSection !== 'all') {
+      filtered = filtered.filter(img => img.section === selectedSection);
+    }
 
     if (searchTerm) {
-      images = images.filter(img => 
+      filtered = filtered.filter(img => 
         img.alt.toLowerCase().includes(searchTerm.toLowerCase()) ||
         img.purpose.toLowerCase().includes(searchTerm.toLowerCase()) ||
         img.section.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
-    return images;
-  }, [selectedSection, searchTerm]);
-
-  const openLightbox = (image: ImageMetadata) => {
-    setLightboxImage(image);
-  };
-
-  const closeLightbox = () => {
-    setLightboxImage(null);
-  };
-
-  const goToPrevious = () => {
-    if (!lightboxImage) return;
-    const currentIndex = filteredImages.findIndex(img => img.id === lightboxImage.id);
-    if (currentIndex > 0) {
-      setLightboxImage(filteredImages[currentIndex - 1]);
-    }
-  };
-
-  const goToNext = () => {
-    if (!lightboxImage) return;
-    const currentIndex = filteredImages.findIndex(img => img.id === lightboxImage.id);
-    if (currentIndex < filteredImages.length - 1) {
-      setLightboxImage(filteredImages[currentIndex + 1]);
-    }
-  };
-
-  const currentImageIndex = lightboxImage ? filteredImages.findIndex(img => img.id === lightboxImage.id) : -1;
+    return filtered;
+  }, [allImages, selectedSection, searchTerm]);
 
   return (
-    <>
-    <div className="bg-homepage bg-vignette min-h-screen">
+    <div className="bg-gallery bg-vignette min-h-screen">
       <div className="container mx-auto px-4 py-16">
-        <DisclaimerBanner />
-        
-        {/* Hero Section */}
-        <GlassCard className="mb-8 text-center">
-          <h1 className="text-5xl font-bold text-white mb-6 font-montserrat drop-shadow-lg">
-            The Visual Language of Genesis
-          </h1>
-          <p className="text-xl text-white/90 leading-relaxed mb-4 drop-shadow-md">
-            A Recursive Fractal Mythic Tech Gallery
-          </p>
-          <p className="text-lg text-white/80">
-            Explore the complete visual ontology of Genesis Parallel Civilisation through {imageRegistry.length} curated images 
-            that demonstrate the transition from Babylon's Corrupted Recursive Loops to Genesis' Stabilized Recursive Loops.
-          </p>
-        </GlassCard>
+        <div className="max-w-7xl mx-auto">
+          <GlassCard className="mb-8" fullScreen={true}>
+            <h1 className="text-5xl font-bold text-white mb-6 font-montserrat drop-shadow-lg text-center">
+              The Visual Language of Genesis
+            </h1>
+            
+            <p className="text-xl text-white/90 leading-relaxed mb-8 drop-shadow-md text-center">
+              A Recursive Fractal Mythic Tech Gallery
+            </p>
 
-        {/* Controls */}
-        <GlassCard className="mb-8">
-          <div className="flex flex-col lg:flex-row gap-6 items-center justify-between">
-            {/* Search */}
-            <div className="w-full lg:w-1/3">
-              <label htmlFor="search" className="block text-sm font-medium text-white/80 mb-2">
-                Search Images
-              </label>
-              <input
-                id="search"
-                type="text"
-                placeholder="Search by title, purpose, or section..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-green-400/50 focus:border-green-400/50 backdrop-blur-sm"
-              />
+            <div className="bg-emerald-900/30 p-6 rounded-lg border border-emerald-400/30 backdrop-blur-sm mb-8">
+              <p className="text-white/90 mb-4 text-center">
+                <strong>Visual Documentation:</strong> This gallery contains all visual elements used throughout the Genesis v Babylon website, 
+                organized by section and purpose. Each image represents a specific aspect of the Genesis parallel civilization's 
+                operational protocols and recursive ontology.
+              </p>
+              <p className="text-emerald-200 text-sm italic text-center">
+                Total Images: {allImages.length} | Filtered: {filteredImages.length}
+              </p>
             </div>
+          </GlassCard>
 
-            {/* Section Filter */}
-            <div className="w-full lg:w-2/3">
-              <label className="block text-sm font-medium text-white/80 mb-2">
-                Filter by Section
-              </label>
-              <div className="flex flex-wrap gap-2">
-                <button
-                  onClick={() => setSelectedSection('all')}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                    selectedSection === 'all'
-                      ? 'bg-green-400 text-black'
-                      : 'bg-white/10 text-white/80 hover:bg-white/20 hover:text-white'
-                  }`}
+          {/* Search and Filter Controls */}
+          <GlassCard className="mb-8">
+            <div className="flex flex-col lg:flex-row gap-6">
+              {/* Search Bar */}
+              <div className="flex-1">
+                <label htmlFor="search" className="block text-sm font-medium text-white/90 mb-2">
+                  Search Images
+                </label>
+                <input
+                  id="search"
+                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Search by title, purpose, or section..."
+                  className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent backdrop-blur-sm"
+                />
+              </div>
+
+              {/* Section Filter */}
+              <div className="lg:w-64">
+                <label htmlFor="section" className="block text-sm font-medium text-white/90 mb-2">
+                  Filter by Section
+                </label>
+                <select
+                  id="section"
+                  value={selectedSection}
+                  onChange={(e) => setSelectedSection(e.target.value)}
+                  className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent backdrop-blur-sm"
                 >
-                  All ({imageRegistry.length})
-                </button>
-                {sections.map(section => {
-                  const sectionImages = imageRegistry.filter(img => img.section === section);
-                  return (
-                    <button
-                      key={section}
-                      onClick={() => setSelectedSection(section)}
-                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                        selectedSection === section
-                          ? 'bg-green-400 text-black'
-                          : 'bg-white/10 text-white/80 hover:bg-white/20 hover:text-white'
-                      }`}
-                    >
-                      {getSectionDisplayName(section)} ({sectionImages.length})
-                    </button>
-                  );
-                })}
+                  <option value="all">All Sections</option>
+                  {sections.map(section => (
+                    <option key={section} value={section}>
+                      {getSectionDisplayName(section)}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
-          </div>
-        </GlassCard>
+          </GlassCard>
 
-        {/* Results Info */}
-        <div className="mb-6">
-          <p className="text-white/70 text-sm">
-            Showing {filteredImages.length} of {imageRegistry.length} images
-            {selectedSection !== 'all' && ` in ${getSectionDisplayName(selectedSection)}`}
-            {searchTerm && ` matching "${searchTerm}"`}
-          </p>
-        </div>
-
-        {/* Image Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-          {filteredImages.map((image) => (
-            <div
-              key={image.id}
-              className="glass-card rounded-xl overflow-hidden group cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-green-400/20"
-              onClick={() => openLightbox(image)}
-            >
-              <div className="relative aspect-[4/3] overflow-hidden">
-                {/* Used in Body Indicator */}
-                {image.usedInBody && (
-                  <div className="absolute top-2 right-2 bg-green-400 text-black text-xs px-2 py-1 rounded-full font-semibold z-20">
-                    In Content
+          {/* Image Grid */}
+          <GlassCard>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {filteredImages.map((image) => (
+                <div
+                  key={image.id}
+                  className="group cursor-pointer"
+                  onClick={() => setSelectedImage(image)}
+                >
+                  <div className="relative overflow-hidden rounded-xl border border-white/20 shadow-xl bg-white/5 backdrop-blur-sm">
+                    <Image
+                      src={image.src}
+                      alt={image.alt}
+                      width={400}
+                      height={300}
+                      className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute bottom-0 left-0 right-0 p-4 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                      <h3 className="text-sm font-semibold mb-1 line-clamp-2">
+                        {image.alt}
+                      </h3>
+                      <p className="text-xs text-white/80 mb-2 line-clamp-2">
+                        {image.purpose}
+                      </p>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs bg-green-400/20 text-green-300 px-2 py-1 rounded">
+                          {getSectionDisplayName(image.section)}
+                        </span>
+                        <span className="text-xs text-white/60">
+                          {image.usedInBody ? 'Used in Body' : 'Gallery Only'}
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                )}
+                </div>
+              ))}
+            </div>
+
+            {filteredImages.length === 0 && (
+              <div className="text-center py-12">
+                <p className="text-white/60 text-lg">No images found matching your criteria.</p>
+              </div>
+            )}
+          </GlassCard>
+
+          {/* Lightbox Modal */}
+          {selectedImage && (
+            <div 
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+              onClick={() => setSelectedImage(null)}
+            >
+              <div 
+                className="relative max-w-4xl max-h-[90vh] bg-white/10 border border-white/20 rounded-2xl p-6 backdrop-blur-lg"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  onClick={() => setSelectedImage(null)}
+                  className="absolute top-4 right-4 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full p-2 transition-all duration-200"
+                  aria-label="Close lightbox"
+                >
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
                 
-                <img
-                  src={image.src}
-                  alt={image.alt}
-                  className="object-cover transition-transform duration-500 group-hover:scale-110 w-full h-full"
-                  onError={(e) => {
-                    console.log('Gallery image failed to load:', image.src);
-                    e.currentTarget.src = '/images/sections/recursive-memetic-weapons-1.png';
-                  }}
-                />
+                <div className="mb-4">
+                  <Image
+                    src={selectedImage.src}
+                    alt={selectedImage.alt}
+                    width={800}
+                    height={600}
+                    className="w-full h-auto rounded-lg"
+                  />
+                </div>
                 
-                {/* Overlay Info */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 flex items-end p-4">
-                  <div>
-                    <h3 className="text-white font-semibold text-sm mb-1 line-clamp-2">
-                      {image.alt}
-                    </h3>
-                    <p className="text-green-300 text-xs line-clamp-2 mb-1">
-                      {image.purpose}
-                    </p>
-                    <span className="text-white/70 text-xs uppercase tracking-wide">
-                      {getSectionDisplayName(image.section)}
+                <div className="text-white">
+                  <h3 className="text-xl font-semibold mb-2">{selectedImage.alt}</h3>
+                  <p className="text-white/80 mb-4">{selectedImage.purpose}</p>
+                  <div className="flex items-center justify-between">
+                    <span className="bg-green-400/20 text-green-300 px-3 py-1 rounded">
+                      {getSectionDisplayName(selectedImage.section)}
+                    </span>
+                    <span className="text-white/60 text-sm">
+                      {selectedImage.usedInBody ? 'Used in Body Content' : 'Gallery Only'}
                     </span>
                   </div>
                 </div>
               </div>
             </div>
-          ))}
+          )}
         </div>
-
-        {/* No Results */}
-        {filteredImages.length === 0 && (
-          <GlassCard className="text-center py-12">
-            <h3 className="text-xl font-semibold text-white/80 mb-2">No Images Found</h3>
-            <p className="text-white/60">
-              Try adjusting your search terms or selecting a different section.
-            </p>
-          </GlassCard>
-        )}
       </div>
-
     </div>
-
-    {/* Enhanced Image Popup - Rendered outside main container */}
-    <EnhancedImagePopup
-      image={lightboxImage}
-      onClose={closeLightbox}
-      onPrevious={currentImageIndex > 0 ? goToPrevious : undefined}
-      onNext={currentImageIndex < filteredImages.length - 1 ? goToNext : undefined}
-      hasPrevious={currentImageIndex > 0}
-      hasNext={currentImageIndex < filteredImages.length - 1}
-    />
-    </>
   );
 }

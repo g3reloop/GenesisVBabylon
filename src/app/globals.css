@@ -1,15 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Recursive:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* Genesis Theme Variables */
 :root {
-  --electric-violet: #7E60BF;
-  --plasma-green: #00FF9D;
-  --deep-black: #2A2A2A;
-  --cloud-white: #F0F0F0;
-  --recursive-font: 'Recursive', monospace;
+  --primary: #7E60BF;
+  --secondary: #00FF9D;
+  --background: #2A2A2A;
+  --text: #F0F0F0;
+  --accent: #00A8FF;
+  --recursive-font: 'Recursive', 'Inter', sans-serif;
+  
+  /* Glassmorphism Variables */
+  --glass-bg: rgba(42, 42, 42, 0.25);
+  --glass-border: rgba(126, 96, 191, 0.15);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+  --glass-blur: blur(12px);
 }
 
 /* Global Genesis Theme */
@@ -18,20 +26,107 @@
 }
 
 html {
-  background: var(--deep-black);
+  background: var(--background);
   min-height: 100vh;
   font-family: var(--recursive-font);
+  font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
   font-family: var(--recursive-font);
-  background: var(--deep-black);
-  color: var(--cloud-white);
+  background: var(--background);
+  color: var(--text);
   overflow-x: hidden;
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  line-height: 1.6;
+  line-height: 1.7;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Fractal Background Pattern */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(126, 96, 191, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(126, 96, 191, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+  z-index: -2;
+  pointer-events: none;
+}
+
+/* Glassmorphism Base Classes */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-radius: 16px;
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  border: 1px solid rgba(126, 96, 191, 0.4);
+  box-shadow: 0 0 30px rgba(126, 96, 191, 0.2);
+}
+
+.glass-card:active {
+  border: 1px solid var(--primary);
+  box-shadow: 0 0 30px rgba(126, 96, 191, 0.4);
+}
+
+.text-glow {
+  text-shadow: 0 0 10px rgba(126, 96, 191, 0.5);
+}
+
+.text-glow-strong {
+  text-shadow: 0 0 20px rgba(126, 96, 191, 0.8);
+}
+
+/* Performance Optimizations */
+.bg-optimized {
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.lazy-placeholder {
+  background: linear-gradient(90deg, #2A2A2A 25%, #3A3A3A 50%, #2A2A2A 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Image Optimizations */
+img {
+  max-width: 100%;
+  height: auto;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 section {

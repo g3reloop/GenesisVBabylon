@@ -4,6 +4,8 @@ import { useState } from 'react';
 import GenesisNavigation from '../components/GenesisNavigation';
 import PageWithBackground from '../components/PageWithBackground';
 import GlassCard from '../components/GlassCard';
+import ImageGallery from '../components/gallery/ImageGallery';
+import { getUnusedImagesBySection } from '@/lib/image-registry';
 
 export default function OntologyPage() {
   const [activeSection, setActiveSection] = useState('recursive-ontology');
@@ -204,6 +206,15 @@ export default function OntologyPage() {
               </div>
             </GlassCard>
           )}
+        </div>
+
+        {/* Additional Visual Explorations Gallery */}
+        <div className="mt-16">
+          <ImageGallery 
+            images={getUnusedImagesBySection('ontology')}
+            title="Additional Visual Explorations: Civilizational Ontology"
+            className="mt-8"
+          />
         </div>
       </main>
     </PageWithBackground>

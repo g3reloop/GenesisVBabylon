@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import GlassCard from '../components/GlassCard';
 import ImageGallery from '../components/gallery/ImageGallery';
-import { getImagesBySection } from '@/lib/image-registry';
+import { getUnusedImagesBySection } from '@/lib/image-registry';
 
 interface NetworkMetrics {
   betweennessCentrality: number;
@@ -34,7 +34,7 @@ interface HistoricalExample {
 }
 
 export default function FractalGrowth() {
-  const unusedImages = getImagesBySection('growth', true);
+  const unusedImages = getUnusedImagesBySection('growth');
   const [selectedVisualization, setSelectedVisualization] = useState<string>('topology');
   const [showCode, setShowCode] = useState<boolean>(false);
 

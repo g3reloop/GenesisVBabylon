@@ -3,15 +3,12 @@
 import React from 'react';
 import DisclaimerBanner from '../components/DisclaimerBanner';
 import GlassCard from '../components/GlassCard';
-import SongCard from '../components/music/SongCard';
-import { useAdvancedMusicPlayer } from '../components/music/AdvancedMusicPlayerProvider';
-import { songs } from '../../lib/songs-data';
+import { musicTracks } from '../../lib/music-data';
 
 export default function RMWDiscographyPage() {
-  const { playSong, currentSong, isPlaying } = useAdvancedMusicPlayer();
-
-  const handlePlaySong = (song: typeof songs[0]) => {
-    playSong(song);
+  const handlePlaySong = (song: typeof musicTracks[0]) => {
+    // The music player will handle this automatically
+    console.log('Playing song:', song.title);
   };
 
   return (
@@ -49,14 +46,29 @@ export default function RMWDiscographyPage() {
 
         {/* Song Cards Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          {songs.map((song) => (
-            <SongCard
-              key={song.songNumber}
-              song={song}
-              isPlaying={currentSong?.songNumber === song.songNumber && isPlaying}
-              onPlay={() => handlePlaySong(song)}
-              onPause={() => {}} // Handled by persistent player
-            />
+          {musicTracks.map((track, index) => (
+            <div key={track.id} className="glass-card p-6">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-16 h-16 bg-primary/20 rounded-lg flex items-center justify-center">
+                  <span className="text-primary font-bold text-lg">{index + 1}</span>
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold text-white mb-1">{track.title}</h3>
+                  <p className="text-white/70 text-sm">{track.artist}</p>
+                  <p className="text-white/50 text-xs">{track.duration}</p>
+                </div>
+              </div>
+              <p className="text-white/80 text-sm mb-4">
+                Track {index + 1} of the Genesis Protocol music collection. 
+                This track is automatically available in the persistent music player.
+              </p>
+              <button
+                onClick={() => handlePlaySong(track)}
+                className="btn btn-primary w-full"
+              >
+                Play Track
+              </button>
+            </div>
           ))}
         </div>
 

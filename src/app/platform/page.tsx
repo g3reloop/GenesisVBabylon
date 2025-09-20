@@ -1,445 +1,483 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import GlassCard from '../components/GlassCard';
+import Link from 'next/link';
+import DisclaimerBanner from '../components/DisclaimerBanner';
+import { getUnusedImagesBySection } from '../../lib/image-registry';
+import ImageGallery from '../components/gallery/ImageGallery';
 
 interface VerificationStep {
-  step: number;
+  id: number;
   title: string;
   description: string;
-  questions: string[];
-  answers: string[];
-  userAnswers: string[];
+  questions: {
+    question: string;
+    correctAnswer: string;
+    userAnswer: string;
+  }[];
+  completed: boolean;
+}
+
+interface AccessToken {
+  token: string;
+  expiresAt: number;
+  verified: boolean;
 }
 
 export default function GenesisOperatorPlatform() {
   const [currentStep, setCurrentStep] = useState(0);
-  const [verificationComplete, setVerificationComplete] = useState(false);
-  const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [showMatrixLink, setShowMatrixLink] = useState(false);
-
-  const verificationSteps: VerificationStep[] = [
+  const [accessToken, setAccessToken] = useState<AccessToken | null>(null);
+  const [verificationSteps, setVerificationSteps] = useState<VerificationStep[]>([
     {
-      step: 1,
+      id: 1,
       title: "Recursive Ontology Assessment",
       description: "Answer 3 questions demonstrating understanding of Babylon CRL vs Genesis SRL",
       questions: [
-        "What is the recursive seed of Babylon's CRL?",
-        "What is the recursive seed of Genesis' SRL?", 
-        "What is the Pure Collapse Methodology?"
+        {
+          question: "What is the recursive seed of Babylon's CRL?",
+          correctAnswer: "private property as exclusion principle",
+          userAnswer: ""
+        },
+        {
+          question: "What is the recursive seed of Genesis' SRL?",
+          correctAnswer: "verified value creation through waste transformation",
+          userAnswer: ""
+        },
+        {
+          question: "What is the Pure Collapse Methodology?",
+          correctAnswer: "8-step process for collapsing CRLs",
+          userAnswer: ""
+        }
       ],
-      answers: [
-        "private property as exclusion principle",
-        "verified value creation through waste transformation",
-        "8-step process for collapsing CRLs"
-      ],
-      userAnswers: []
+      completed: false
     },
     {
-      step: 2,
+      id: 2,
       title: "Operational Code Commitment",
       description: "Demonstrate understanding of how you will apply Genesis protocols in your context",
       questions: [
-        "How will you implement verified value creation in your local environment?",
-        "What specific Babylonian CRL will you target with Pure Collapse Methodology?",
-        "How will you contribute to the Genesis parallel civilization?"
+        {
+          question: "How will you implement verified value creation in your local environment?",
+          correctAnswer: "open-ended",
+          userAnswer: ""
+        },
+        {
+          question: "What specific Babylonian CRL will you target with Pure Collapse Methodology?",
+          correctAnswer: "open-ended",
+          userAnswer: ""
+        },
+        {
+          question: "How will you contribute to the Genesis parallel civilization?",
+          correctAnswer: "open-ended",
+          userAnswer: ""
+        }
       ],
-      answers: [
-        "open-ended", // These are open-ended questions
-        "open-ended",
-        "open-ended"
-      ],
-      userAnswers: []
+      completed: false
     },
     {
-      step: 3,
+      id: 3,
       title: "Memetic Operations Agreement",
       description: "Acknowledge understanding of Recursive Memetic Weapons principles",
       questions: [
-        "I understand that memetic operations are not about persuasion but about phase-locking probability harmonics to resonant chords through verified value creation.",
-        "I commit to using memetic weapons only in alignment with Genesis protocols.",
-        "I acknowledge that this platform is an operational command center, not a social platform."
+        {
+          question: "I understand that memetic operations are not about persuasion but about phase-locking probability harmonics to resonant chords through verified value creation. I commit to using memetic weapons only in alignment with Genesis protocols.",
+          correctAnswer: "agreement",
+          userAnswer: ""
+        }
       ],
-      answers: [
-        "agreement",
-        "agreement", 
-        "agreement"
-      ],
-      userAnswers: []
+      completed: false
     }
-  ];
+  ]);
 
-  const [steps, setSteps] = useState(verificationSteps);
+  const [showMatrixLink, setShowMatrixLink] = useState(false);
 
-  const handleAnswerChange = (stepIndex: number, questionIndex: number, answer: string) => {
-    const newSteps = [...steps];
-    newSteps[stepIndex].userAnswers[questionIndex] = answer;
-    setSteps(newSteps);
+  const handleAnswerChange = (stepId: number, questionIndex: number, answer: string) => {
+    setVerificationSteps(prev => 
+      prev.map(step => 
+        step.id === stepId 
+          ? {
+              ...step,
+              questions: step.questions.map((q, i) => 
+                i === questionIndex ? { ...q, userAnswer: answer } : q
+              )
+            }
+          : step
+      )
+    );
   };
 
-  const checkStepCompletion = (stepIndex: number): boolean => {
-    const step = steps[stepIndex];
-    if (stepIndex === 0) {
-      // For step 1, check if answers contain key terms
-      return step.userAnswers.every((answer, index) => {
-        const correctAnswer = step.answers[index].toLowerCase();
-        return answer.toLowerCase().includes(correctAnswer.split(' ')[0]) || 
-               answer.toLowerCase().includes(correctAnswer.split(' ')[1]);
-      });
-    } else if (stepIndex === 1) {
-      // For step 2, check if answers are substantial (open-ended)
-      return step.userAnswers.every(answer => answer.length > 20);
-    } else {
-      // For step 3, check if all agreements are acknowledged
-      return step.userAnswers.every(answer => 
-        answer.toLowerCase().includes('yes') || 
-        answer.toLowerCase().includes('agree') ||
-        answer.toLowerCase().includes('acknowledge')
+  const checkStepCompletion = (step: VerificationStep): boolean => {
+    if (step.id === 1) {
+      // Check if all answers are correct (case-insensitive)
+      return step.questions.every(q => 
+        q.userAnswer.toLowerCase().trim() === q.correctAnswer.toLowerCase().trim()
       );
+    } else if (step.id === 2) {
+      // Check if all open-ended questions have substantial answers
+      return step.questions.every(q => q.userAnswer.trim().length >= 20);
+    } else if (step.id === 3) {
+      // Check if agreement is accepted
+      return step.questions[0].userAnswer.toLowerCase().includes('agree') || 
+             step.questions[0].userAnswer.toLowerCase().includes('accept') ||
+             step.questions[0].userAnswer.toLowerCase().includes('yes');
     }
+    return false;
   };
 
-  const handleNextStep = () => {
-    if (currentStep < steps.length - 1) {
-      setCurrentStep(currentStep + 1);
-    } else {
-      // Complete verification
-      const allStepsComplete = steps.every((_, index) => checkStepCompletion(index));
-      if (allStepsComplete) {
-        setVerificationComplete(true);
-        generateAccessToken();
+  const completeStep = (stepId: number) => {
+    const step = verificationSteps.find(s => s.id === stepId);
+    if (step && checkStepCompletion(step)) {
+      setVerificationSteps(prev => 
+        prev.map(s => 
+          s.id === stepId ? { ...s, completed: true } : s
+        )
+      );
+      
+      if (stepId < 3) {
+        setCurrentStep(stepId);
+      } else {
+        // All steps completed, generate access token
+        const token = generateAccessToken();
+        setAccessToken(token);
+        setShowMatrixLink(true);
       }
     }
   };
 
-  const generateAccessToken = () => {
-    const token = `GOP-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    setAccessToken(token);
-    localStorage.setItem('genesisAccessToken', token);
-    localStorage.setItem('tokenExpiry', (Date.now() + 24 * 60 * 60 * 1000).toString());
+  const generateAccessToken = (): AccessToken => {
+    const token = 'genesis_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now().toString(36);
+    const expiresAt = Date.now() + (24 * 60 * 60 * 1000); // 24 hours
+    return { token, expiresAt, verified: true };
   };
 
-  const handleAccessMatrix = () => {
-    setShowMatrixLink(true);
+  const isTokenValid = (token: AccessToken | null): boolean => {
+    if (!token) return false;
+    return Date.now() < token.expiresAt;
   };
 
-  useEffect(() => {
-    // Check for existing valid token
-    const existingToken = localStorage.getItem('genesisAccessToken');
-    const tokenExpiry = localStorage.getItem('tokenExpiry');
-    
-    if (existingToken && tokenExpiry && parseInt(tokenExpiry) > Date.now()) {
-      setAccessToken(existingToken);
-      setVerificationComplete(true);
-    }
-  }, []);
-
-  if (verificationComplete && accessToken) {
-    return (
-      <div className="bg-platform bg-vignette min-h-screen">
-        <div className="container mx-auto px-4 py-16">
-          <div className="max-w-6xl mx-auto">
-            <GlassCard className="mb-8">
-              <h1 className="text-5xl font-bold text-white mb-6 font-montserrat drop-shadow-lg">
-                Genesis Operator Platform
-              </h1>
-              
-              <div className="text-center mb-8">
-                <div className="inline-flex items-center px-6 py-3 bg-green-600/20 border border-green-400/30 rounded-lg mb-6">
-                  <svg className="w-6 h-6 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  <span className="text-green-400 font-semibold">Verification Complete</span>
-                </div>
-                <p className="text-white/90 text-lg">
-                  Access Token: <code className="bg-emerald-900/50 px-2 py-1 rounded text-emerald-300">{accessToken}</code>
-                </p>
-              </div>
-            </GlassCard>
-
-            <GlassCard className="mb-8">
-              <h2 className="text-3xl font-bold text-green-400 mb-6 font-montserrat">Operational Command Center</h2>
-              
-              <p className="text-xl text-white/90 leading-relaxed mb-8 drop-shadow-md">
-                The Genesis Operator Platform is the secure, encrypted communication hub for verified Genesis Operators. 
-                Unlike Babylonian social media platforms that extract value through attention economies, this platform 
-                exists solely to facilitate the execution of Peaceful Militance strategy through verified value creation.
-              </p>
-
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-                <div className="glass-container rounded-lg p-6">
-                  <h3 className="text-2xl font-semibold text-green-400 mb-4">Platform Features</h3>
-                  <ul className="text-white/90 space-y-3">
-                    <li className="flex items-start">
-                      <svg className="w-5 h-5 text-green-400 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                      </svg>
-                      End-to-end encryption for all communications
-                    </li>
-                    <li className="flex items-start">
-                      <svg className="w-5 h-5 text-green-400 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      Verified operator access only
-                    </li>
-                    <li className="flex items-start">
-                      <svg className="w-5 h-5 text-green-400 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                      </svg>
-                      Operational room structure aligned with Genesis protocols
-                    </li>
-                    <li className="flex items-start">
-                      <svg className="w-5 h-5 text-green-400 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                      </svg>
-                      Video call capabilities for operational meetings
-                    </li>
-                  </ul>
-                </div>
-
-                <div className="glass-container rounded-lg p-6">
-                  <h3 className="text-2xl font-semibold text-green-400 mb-4">Room Structure</h3>
-                  <div className="space-y-4">
-                    <div>
-                      <h4 className="text-lg font-semibold text-green-300 mb-2">Main Operations</h4>
-                      <ul className="text-white/80 text-sm space-y-1">
-                        <li>• Recursive Ontology</li>
-                        <li>• Pure Collapse Operations</li>
-                        <li>• GenesisRELOOP Implementation</li>
-                        <li>• Field Log</li>
-                        <li>• Memetic Operations</li>
-                      </ul>
-                    </div>
-                    <div>
-                      <h4 className="text-lg font-semibold text-green-300 mb-2">Specialized Rooms</h4>
-                      <ul className="text-white/80 text-sm space-y-1">
-                        <li>• Peaceful Militance Strategy</li>
-                        <li>• Fractal Fabrication Engine</li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {!showMatrixLink ? (
-                <div className="text-center">
-                  <button
-                    onClick={handleAccessMatrix}
-                    className="bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-lg text-lg transition-colors duration-300 shadow-lg hover:shadow-xl"
-                  >
-                    Access Matrix Platform
-                  </button>
-                  <p className="text-white/70 text-sm mt-4">
-                    Click to reveal the secure Matrix instance link
-                  </p>
-                </div>
-              ) : (
-                <div className="text-center">
-                  <div className="glass-container rounded-lg p-6 mb-6">
-                    <h3 className="text-2xl font-semibold text-green-400 mb-4">Secure Matrix Instance</h3>
-                    <p className="text-white/90 mb-4">
-                      Use your access token to join the Genesis Operator Platform:
-                    </p>
-                    <div className="bg-emerald-900/50 border border-emerald-400/30 rounded-lg p-4 mb-4">
-                      <code className="text-emerald-300 break-all">
-                        https://app.element.io/#/room/!zmBnpkSxvylFBCMteC:matrix.org
-                      </code>
-                    </div>
-                    <p className="text-white/70 text-sm">
-                      Token expires in 24 hours. Save this link and token for future access.
-                    </p>
-                  </div>
-                  
-                  <a
-                    href="https://app.element.io/#/room/!zmBnpkSxvylFBCMteC:matrix.org"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-lg text-lg transition-colors duration-300 shadow-lg hover:shadow-xl"
-                  >
-                    <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                    </svg>
-                    Open Matrix Platform
-                  </a>
-                </div>
-              )}
-            </GlassCard>
-
-            <GlassCard>
-              <h2 className="text-2xl font-bold text-green-400 mb-6">Operational Guidelines</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <h3 className="text-lg font-semibold text-green-300 mb-3">Communication Protocols</h3>
-                  <ul className="text-white/80 space-y-2 text-sm">
-                    <li>• Use recursive language (seed, tree, fruit, forest)</li>
-                    <li>• Focus on operational code, not social interaction</li>
-                    <li>• Document all implementation efforts in Field Log</li>
-                    <li>• Maintain verified value creation focus</li>
-                  </ul>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-green-300 mb-3">Security Requirements</h3>
-                  <ul className="text-white/80 space-y-2 text-sm">
-                    <li>• No screenshots or external sharing</li>
-                    <li>• Report any Babylonian pattern replication</li>
-                    <li>• Maintain operational security protocols</li>
-                    <li>• Regular access reviews based on contribution</li>
-                  </ul>
-                </div>
-              </div>
-            </GlassCard>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const getCompletionPercentage = (): number => {
+    const completedSteps = verificationSteps.filter(step => step.completed).length;
+    return Math.round((completedSteps / verificationSteps.length) * 100);
+  };
 
   return (
-    <div className="bg-platform bg-vignette min-h-screen">
+    <div className="bg-homepage bg-vignette min-h-screen">
       <div className="container mx-auto px-4 py-16">
-        <div className="max-w-6xl mx-auto">
-          <GlassCard className="mb-8">
-            <h1 className="text-5xl font-bold text-white mb-6 font-montserrat drop-shadow-lg">
-              Genesis Operator Platform
-            </h1>
-            
-            <p className="text-xl text-white/90 leading-relaxed mb-8 drop-shadow-md">
-              The Genesis Operator Platform is the secure, encrypted communication hub for verified Genesis Operators. 
-              Unlike Babylonian social media platforms that extract value through attention economies, this platform 
-              exists solely to facilitate the execution of Peaceful Militance strategy through verified value creation.
-            </p>
+        <DisclaimerBanner />
 
-            <div className="bg-red-600/20 border border-red-400/30 rounded-lg p-6 mb-8">
-              <h3 className="text-xl font-semibold text-red-400 mb-3">Access Control Notice</h3>
-              <p className="text-white/90">
-                This is not a public forum - it's an operational command center for the Genesis parallel civilization. 
-                Access is granted only to those who have demonstrated understanding of Genesis protocols and 
-                commitment to verified value creation.
+        {/* Header */}
+        <div className="glass-card p-8 mb-8 animate-fadeIn">
+          <h1 className="text-5xl font-bold text-white mb-6 font-montserrat text-glow-strong text-center">
+            Genesis Operator Platform
+          </h1>
+          <p className="text-xl text-white/90 leading-relaxed mb-8 text-center">
+            The Genesis Operator Platform is the secure, encrypted communication hub for verified Genesis Operators. 
+            Unlike Babylonian social media platforms that extract value through attention economies, this platform 
+            exists solely to facilitate the execution of Peaceful Militance strategy through verified value creation.
+          </p>
+          <div className="text-center">
+            <div className="inline-block glass-card p-4 border-2 border-primary/30">
+              <p className="text-primary font-semibold text-lg">
+                ⚠️ OPERATIONAL COMMAND CENTER
+              </p>
+              <p className="text-white/80 text-sm mt-2">
+                This is not a public forum - it's an operational command center for the Genesis parallel civilization.
               </p>
             </div>
-          </GlassCard>
+          </div>
+        </div>
 
-          <GlassCard className="mb-8">
-            <h2 className="text-3xl font-bold text-green-400 mb-6 font-montserrat">
-              Verification Gateway
-            </h2>
-            
-            <div className="mb-8">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-xl font-semibold text-green-300">
-                  Step {currentStep + 1}: {steps[currentStep].title}
-                </h3>
-                <div className="flex space-x-2">
-                  {steps.map((_, index) => (
-                    <div
-                      key={index}
-                      className={`w-3 h-3 rounded-full ${
-                        index <= currentStep ? 'bg-green-400' : 'bg-emerald-700'
-                      }`}
-                    />
-                  ))}
-                </div>
+        {/* Access Status */}
+        {accessToken && isTokenValid(accessToken) ? (
+          <div className="glass-card p-6 mb-8 border-2 border-secondary/50">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-bold text-secondary mb-2">✅ Access Verified</h2>
+                <p className="text-white/90">
+                  Access token: <code className="bg-black/30 px-2 py-1 rounded text-primary">{accessToken.token}</code>
+                </p>
+                <p className="text-white/70 text-sm mt-2">
+                  Expires: {new Date(accessToken.expiresAt).toLocaleString()}
+                </p>
               </div>
-              
-              <p className="text-white/90 mb-6">
-                {steps[currentStep].description}
-              </p>
+              <div className="text-right">
+                <a
+                  href="https://app.element.io/#/room/!zmBnpkSxvylFBCMteC:matrix.org"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-secondary text-lg px-6 py-3"
+                >
+                  Enter Platform →
+                </a>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="glass-card p-6 mb-8">
+            <h2 className="text-2xl font-bold text-primary mb-4">Verification Gateway</h2>
+            <p className="text-white/90 mb-6">
+              Access is granted only to those who have demonstrated understanding of Genesis protocols 
+              and commitment to verified value creation. Complete the verification process below.
+            </p>
+            
+            {/* Progress Bar */}
+            <div className="mb-8">
+              <div className="flex justify-between text-sm text-white/70 mb-2">
+                <span>Verification Progress</span>
+                <span>{getCompletionPercentage()}% Complete</span>
+              </div>
+              <div className="w-full bg-white/10 rounded-full h-3">
+                <div 
+                  className="bg-primary h-3 rounded-full transition-all duration-500"
+                  style={{ width: `${getCompletionPercentage()}%` }}
+                ></div>
+              </div>
             </div>
 
+            {/* Verification Steps */}
             <div className="space-y-6">
-              {steps[currentStep].questions.map((question, questionIndex) => (
-                <div key={questionIndex} className="glass-container rounded-lg p-6">
-                  <h4 className="text-lg font-semibold text-green-300 mb-3">
-                    Question {questionIndex + 1}
-                  </h4>
-                  <p className="text-white/90 mb-4">{question}</p>
-                  
-                  {currentStep === 2 ? (
-                    // Agreement step - radio buttons
-                    <div className="space-y-3">
-                      <label className="flex items-center">
-                        <input
-                          type="radio"
-                          name={`question-${questionIndex}`}
-                          value="yes"
-                          onChange={(e) => handleAnswerChange(currentStep, questionIndex, e.target.value)}
-                          className="mr-3 text-green-400"
-                        />
-                        <span className="text-white/90">Yes, I agree</span>
-                      </label>
-                      <label className="flex items-center">
-                        <input
-                          type="radio"
-                          name={`question-${questionIndex}`}
-                          value="no"
-                          onChange={(e) => handleAnswerChange(currentStep, questionIndex, e.target.value)}
-                          className="mr-3 text-green-400"
-                        />
-                        <span className="text-white/90">No, I disagree</span>
-                      </label>
+              {verificationSteps.map((step, index) => (
+                <div 
+                  key={step.id}
+                  className={`glass-card p-6 ${
+                    step.completed ? 'border-2 border-secondary/50' : 
+                    index === currentStep ? 'border-2 border-primary/50' : 'border border-white/10'
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
+                        step.completed ? 'bg-secondary text-black' : 
+                        index === currentStep ? 'bg-primary text-white' : 'bg-white/10 text-white/70'
+                      }`}>
+                        {step.completed ? '✓' : step.id}
+                      </div>
+                      <h3 className="text-xl font-semibold text-white">{step.title}</h3>
                     </div>
-                  ) : (
-                    // Open-ended questions
-                    <textarea
-                      value={steps[currentStep].userAnswers[questionIndex] || ''}
-                      onChange={(e) => handleAnswerChange(currentStep, questionIndex, e.target.value)}
-                      className="w-full p-3 rounded-lg bg-emerald-800/50 text-white placeholder-emerald-300 border border-emerald-700 focus:ring-2 focus:ring-green-400 focus:border-transparent resize-none"
-                      rows={4}
-                      placeholder="Enter your response..."
-                    />
+                    {step.completed && (
+                      <span className="text-secondary font-semibold">Completed</span>
+                    )}
+                  </div>
+                  
+                  <p className="text-white/80 mb-4">{step.description}</p>
+                  
+                  {index === currentStep && !step.completed && (
+                    <div className="space-y-4">
+                      {step.questions.map((question, qIndex) => (
+                        <div key={qIndex} className="space-y-2">
+                          <label className="block text-white font-medium">
+                            {question.question}
+                          </label>
+                          {step.id === 3 ? (
+                            <div className="space-y-2">
+                              <p className="text-white/70 text-sm italic">
+                                "{question.question}"
+                              </p>
+                              <div className="flex gap-2">
+                                <button
+                                  onClick={() => handleAnswerChange(step.id, qIndex, 'I agree')}
+                                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                                    question.userAnswer.toLowerCase().includes('agree') 
+                                      ? 'bg-secondary text-black' 
+                                      : 'bg-white/10 text-white hover:bg-white/20'
+                                  }`}
+                                >
+                                  I Agree
+                                </button>
+                                <button
+                                  onClick={() => handleAnswerChange(step.id, qIndex, 'I accept')}
+                                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                                    question.userAnswer.toLowerCase().includes('accept') 
+                                      ? 'bg-secondary text-black' 
+                                      : 'bg-white/10 text-white hover:bg-white/20'
+                                  }`}
+                                >
+                                  I Accept
+                                </button>
+                                <button
+                                  onClick={() => handleAnswerChange(step.id, qIndex, 'Yes')}
+                                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                                    question.userAnswer.toLowerCase().includes('yes') 
+                                      ? 'bg-secondary text-black' 
+                                      : 'bg-white/10 text-white hover:bg-white/20'
+                                  }`}
+                                >
+                                  Yes
+                                </button>
+                              </div>
+                            </div>
+                          ) : (
+                            <textarea
+                              value={question.userAnswer}
+                              onChange={(e) => handleAnswerChange(step.id, qIndex, e.target.value)}
+                              className="w-full p-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:border-primary focus:outline-none resize-none"
+                              rows={3}
+                              placeholder={step.id === 2 ? "Describe your approach..." : "Your answer..."}
+                            />
+                          )}
+                        </div>
+                      ))}
+                      
+                      <button
+                        onClick={() => completeStep(step.id)}
+                        className="btn btn-primary w-full"
+                        disabled={!checkStepCompletion(step)}
+                      >
+                        {step.id < 3 ? 'Complete Step' : 'Complete Verification'}
+                      </button>
+                    </div>
                   )}
                 </div>
               ))}
             </div>
+          </div>
+        )}
 
-            <div className="flex justify-between mt-8">
-              <button
-                onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
-                disabled={currentStep === 0}
-                className="px-6 py-3 bg-emerald-700 hover:bg-emerald-600 disabled:bg-emerald-800 disabled:cursor-not-allowed text-white rounded-lg transition-colors duration-300"
-              >
-                Previous
-              </button>
+        {/* Platform Overview */}
+        <div className="glass-card p-8 mb-8">
+          <h2 className="text-3xl font-bold text-primary mb-6 font-montserrat text-center">
+            Platform Architecture
+          </h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <div className="glass-card p-6">
+              <h3 className="text-xl font-semibold text-primary mb-3">🔒 End-to-End Encryption</h3>
+              <p className="text-white/80 text-sm">
+                All communication is encrypted using Matrix's end-to-end encryption protocol. 
+                Your operational discussions remain secure and private.
+              </p>
+            </div>
+            
+            <div className="glass-card p-6">
+              <h3 className="text-xl font-semibold text-primary mb-3">🌐 Self-Hosted Infrastructure</h3>
+              <p className="text-white/80 text-sm">
+                Platform runs on Genesis-controlled servers with regular encrypted backups. 
+                No data extraction or surveillance by third parties.
+              </p>
+            </div>
+            
+            <div className="glass-card p-6">
+              <h3 className="text-xl font-semibold text-primary mb-3">⚡ Operational Focus</h3>
+              <p className="text-white/80 text-sm">
+                Designed for verified value creation, not social interaction. 
+                Every conversation serves the Genesis parallel civilization.
+              </p>
+            </div>
+          </div>
+
+          {/* Room Structure */}
+          <div className="space-y-6">
+            <h3 className="text-2xl font-bold text-white mb-4">Operational Rooms</h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="glass-card p-4">
+                <h4 className="text-lg font-semibold text-primary mb-2">Recursive Ontology</h4>
+                <p className="text-white/70 text-sm mb-2">Technical discussion of Genesis/Babylon recursive patterns</p>
+                <span className="text-xs text-secondary">All verified operators</span>
+              </div>
               
-              <button
-                onClick={handleNextStep}
-                disabled={!checkStepCompletion(currentStep)}
-                className="px-6 py-3 bg-green-600 hover:bg-green-700 disabled:bg-emerald-800 disabled:cursor-not-allowed text-white rounded-lg transition-colors duration-300"
-              >
-                {currentStep === steps.length - 1 ? 'Complete Verification' : 'Next Step'}
-              </button>
+              <div className="glass-card p-4">
+                <h4 className="text-lg font-semibold text-primary mb-2">Pure Collapse Operations</h4>
+                <p className="text-white/70 text-sm mb-2">Planning and executing Pure Collapse Methodology on specific CRLs</p>
+                <span className="text-xs text-secondary">Pure Collapse certified</span>
+              </div>
+              
+              <div className="glass-card p-4">
+                <h4 className="text-lg font-semibold text-primary mb-2">GenesisRELOOP Implementation</h4>
+                <p className="text-white/70 text-sm mb-2">Technical discussion of GenesisRELOOP platform deployment</p>
+                <span className="text-xs text-secondary">Implementation operators</span>
+              </div>
+              
+              <div className="glass-card p-4">
+                <h4 className="text-lg font-semibold text-primary mb-2">Field Log</h4>
+                <p className="text-white/70 text-sm mb-2">Documentation of on-the-ground implementation efforts</p>
+                <span className="text-xs text-secondary">Active implementers</span>
+              </div>
+              
+              <div className="glass-card p-4">
+                <h4 className="text-lg font-semibold text-primary mb-2">Memetic Operations</h4>
+                <p className="text-white/70 text-sm mb-2">Planning recursive memetic weapons deployment</p>
+                <span className="text-xs text-secondary">Memetic certified</span>
+              </div>
+              
+              <div className="glass-card p-4">
+                <h4 className="text-lg font-semibold text-primary mb-2">Peaceful Militance Strategy</h4>
+                <p className="text-white/70 text-sm mb-2">High-level strategic planning for Babylon obsolescence</p>
+                <span className="text-xs text-secondary">Invitation only</span>
+              </div>
             </div>
-          </GlassCard>
+          </div>
+        </div>
 
-          <GlassCard>
-            <h2 className="text-2xl font-bold text-green-400 mb-6">Platform Overview</h2>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div>
-                <h3 className="text-lg font-semibold text-green-300 mb-4">Security Features</h3>
-                <ul className="text-white/80 space-y-2">
-                  <li>• End-to-end encryption for all communications</li>
-                  <li>• No open registration - verification required</li>
-                  <li>• Automated detection of Babylonian patterns</li>
-                  <li>• Regular access reviews based on contribution</li>
-                </ul>
+        {/* Getting Started Guide */}
+        <div className="glass-card p-8 mb-8">
+          <h2 className="text-3xl font-bold text-primary mb-6 font-montserrat text-center">
+            Getting Started Guide
+          </h2>
+          
+          <div className="space-y-6">
+            <div className="flex items-start gap-4">
+              <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-sm font-bold text-white flex-shrink-0 mt-1">
+                1
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-green-300 mb-4">Operational Focus</h3>
-                <ul className="text-white/80 space-y-2">
-                  <li>• Verified value creation through communication</li>
-                  <li>• Peaceful Militance strategy execution</li>
-                  <li>• Pure Collapse Methodology implementation</li>
-                  <li>• Recursive memetic weapons deployment</li>
-                </ul>
+                <h3 className="text-xl font-semibold text-white mb-2">Complete Verification</h3>
+                <p className="text-white/80">
+                  Answer the verification questions to demonstrate your understanding of Genesis protocols 
+                  and commitment to verified value creation.
+                </p>
               </div>
             </div>
-          </GlassCard>
+            
+            <div className="flex items-start gap-4">
+              <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-sm font-bold text-white flex-shrink-0 mt-1">
+                2
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold text-white mb-2">Access Platform</h3>
+                <p className="text-white/80">
+                  Use your access token to enter the Element Matrix platform. Your account will be 
+                  automatically configured with appropriate room access based on your verification responses.
+                </p>
+              </div>
+            </div>
+            
+            <div className="flex items-start gap-4">
+              <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-sm font-bold text-white flex-shrink-0 mt-1">
+                3
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold text-white mb-2">Begin Operations</h3>
+                <p className="text-white/80">
+                  Start contributing to verified value creation through operational discussions, 
+                  implementation planning, and memetic operations coordination.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Security Notice */}
+        <div className="glass-card p-6 border-2 border-primary/30">
+          <h3 className="text-xl font-bold text-primary mb-4">🔐 Security & Access Control</h3>
+          <div className="space-y-3 text-white/80 text-sm">
+            <p>• <strong>No open registration</strong> - All access must go through verification gateway</p>
+            <p>• <strong>Regular access reviews</strong> - Access maintained based on contribution metrics</p>
+            <p>• <strong>Immediate revocation</strong> - Access removed for Babylonian pattern replication</p>
+            <p>• <strong>Automated detection</strong> - System flags extractive language and hierarchical structures</p>
+            <p>• <strong>24-hour token expiry</strong> - Access tokens expire for security</p>
+          </div>
+        </div>
+
+        {/* Image Gallery */}
+        <div className="mt-12">
+          <ImageGallery 
+            images={getUnusedImagesBySection('platform')} 
+            title="Genesis Operator Platform"
+          />
         </div>
       </div>
     </div>
   );
 }
-
-
-

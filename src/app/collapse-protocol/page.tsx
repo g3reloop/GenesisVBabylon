@@ -1,5 +1,7 @@
 import Image from 'next/image';
 import GlassCard from '../components/GlassCard';
+import ImageGallery from '../components/gallery/ImageGallery';
+import { getUnusedImagesBySection } from '@/lib/image-registry';
 
 export default function CollapseProtocol() {
   return (
@@ -157,6 +159,15 @@ export default function CollapseProtocol() {
               </figure>
             </div>
           </GlassCard>
+
+          {/* Additional Visual Explorations Gallery */}
+          <div className="mt-16">
+            <ImageGallery 
+              images={getUnusedImagesBySection('collapse-protocol')}
+              title="Additional Visual Explorations: Collapse Protocol"
+              className="mt-8"
+            />
+          </div>
         </div>
       </div>
     </div>
