@@ -117,7 +117,7 @@ export function AdvancedMusicPlayerProvider({ songs, children }: AdvancedMusicPl
   // Initialize current song with persistence
   useEffect(() => {
     if (songs.length > 0 && !currentSong) {
-      let initialSong = songs[0]; // Default to first song (Cry's & Crosses)
+      let initialSong = songs[0]; // Default to first song (G3 Bedouin Blind Plays RSCC For Kronos' Eulogy)
       
       // Try to load from localStorage
       if (typeof window !== 'undefined') {
@@ -126,14 +126,6 @@ export function AdvancedMusicPlayerProvider({ songs, children }: AdvancedMusicPl
           const foundSong = songs.find(song => song.songNumber === parseInt(storedSongNumber, 10));
           if (foundSong) {
             initialSong = foundSong;
-          }
-        } else {
-          // If no stored song and on home page, start with PCG3
-          if (window.location.pathname === '/') {
-            const pcg3Song = songs.find(song => song.songName === 'PCG3');
-            if (pcg3Song) {
-              initialSong = pcg3Song;
-            }
           }
         }
       }
@@ -342,7 +334,7 @@ export function AdvancedMusicPlayerProvider({ songs, children }: AdvancedMusicPl
       setDuration(0);
       setCurrentTime(0);
       
-      // Use optimized audio file if available
+      // Use optimized audio file if available, fallback to original
       const optimizedFile = currentSong.audioFile.replace('/audio/', '/audio/compressed/').replace('.mp3', '_96k.mp3');
       const audioSrc = optimizedFile;
       

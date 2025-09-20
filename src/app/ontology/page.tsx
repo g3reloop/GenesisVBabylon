@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Navigation from '../components/Navigation';
+import PageWithBackground from '../components/PageWithBackground';
 
 export default function OntologyPage() {
   const [activeSection, setActiveSection] = useState('recursive-ontology');
@@ -14,7 +15,7 @@ export default function OntologyPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-emerald-900 to-slate-900">
+    <PageWithBackground sectionId="ontology">
       <Navigation />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -204,6 +205,6 @@ export default function OntologyPage() {
           )}
         </div>
       </main>
-    </div>
+    </PageWithBackground>
   );
 }

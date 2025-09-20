@@ -1,9 +1,10 @@
 import DisclaimerBanner from './components/DisclaimerBanner';
 import GlassCard from './components/GlassCard';
+import PageWithBackground from './components/PageWithBackground';
 
 export default function Home() {
   return (
-    <div className="bg-homepage bg-vignette min-h-screen">
+    <PageWithBackground sectionId="home">
       <div className="container mx-auto px-4 py-16">
         <DisclaimerBanner />
         
@@ -60,6 +61,6 @@ export default function Home() {
           </GlassCard>
         </section>
       </div>
-    </div>
+    </PageWithBackground>
   );
 }

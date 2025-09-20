@@ -1,9 +1,10 @@
 import Image from 'next/image';
 import GlassCard from '../components/GlassCard';
+import PageWithBackground from '../components/PageWithBackground';
 
 export default function History() {
   return (
-    <div className="bg-history bg-vignette min-h-screen">
+    <PageWithBackground sectionId="history">
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-6xl mx-auto">
           <GlassCard className="mb-8">
@@ -608,6 +609,6 @@ export default function History() {
           </GlassCard>
         </div>
       </div>
-    </div>
+    </PageWithBackground>
   );
 }
