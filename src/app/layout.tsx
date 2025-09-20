@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Montserrat } from "next/font/google";
 import "./globals.css";
-import Navigation from "./components/Navigation";
+import GenesisNavigation from "./components/GenesisNavigation";
+import GenesisMusicPlayer from "./components/GenesisMusicPlayer";
 import { AdvancedMusicPlayerProvider } from "./components/music/AdvancedMusicPlayerProvider";
 import PWAInstaller from "./components/PWAInstaller";
 import PerformanceMonitor from "./components/PerformanceMonitor";
@@ -52,14 +53,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-            className={`${inter.variable} ${montserrat.variable} antialiased bg-emerald-900 text-emerald-50 font-sans`}
+            className={`${inter.variable} ${montserrat.variable} antialiased font-sans`}
       >
             <AdvancedMusicPlayerProvider songs={songs}>
-              <Navigation />
-              <main className="min-h-screen">
+              <GenesisNavigation />
+              <main className="min-h-screen pt-16">
                 {children}
               </main>
-              <footer className="bg-emerald-900 text-emerald-300 text-center py-6 border-t border-emerald-700">
+              <GenesisMusicPlayer />
+              <footer className="bg-black/90 backdrop-blur-xl text-cloud-white text-center py-6 border-t border-electric-violet/30">
                 <p>&copy; 2025 Genesis Parallel Civilisation: Genesis V Babylon</p>
               </footer>
               <PWAInstaller />

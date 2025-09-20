@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
+import FallbackVideo from './FallbackVideo';
 
 interface BackgroundVideoProps {
   videoSrc: string;
@@ -54,6 +55,11 @@ export default function BackgroundVideo({
     setIsVideoSupported(false);
   };
 
+  const handleFallbackError = () => {
+    console.error('All video and image fallbacks failed. Using solid background.');
+    setHasError(true);
+  };
+
   const handleVideoLoad = () => {
     setIsVideoLoaded(true);
     setHasError(false);
@@ -69,7 +75,7 @@ export default function BackgroundVideo({
           loop
           muted
           playsInline
-          className="fixed top-0 left-0 w-full h-full object-cover z-[-1] opacity-80"
+          className="bg-video"
           onError={handleVideoError}
           onLoadedData={handleVideoLoad}
           preload={priority ? 'auto' : 'metadata'}
@@ -79,20 +85,12 @@ export default function BackgroundVideo({
         </video>
       )}
 
-      {/* Fallback Image */}
+      {/* Fallback System */}
       {(hasError || !isVideoSupported || !isVideoLoaded) && (
-        <div className="fixed top-0 left-0 w-full h-full z-[-1]">
-          <Image
-            src={fallbackImage}
-            alt={`${sectionId} background`}
-            fill
-            className="object-cover opacity-80"
-            priority={priority}
-            onError={() => {
-              console.log('Fallback image also failed, using default');
-            }}
-          />
-        </div>
+        <FallbackVideo 
+          sectionId={sectionId} 
+          onVideoError={handleFallbackError}
+        />
       )}
 
       {/* Overlay for better text readability */}

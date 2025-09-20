@@ -1,6 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Recursive:wght@300;400;500;600;700;800;900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Genesis Theme Variables */
+:root {
+  --electric-violet: #7E60BF;
+  --plasma-green: #00FF9D;
+  --deep-black: #2A2A2A;
+  --cloud-white: #F0F0F0;
+  --recursive-font: 'Recursive', monospace;
+}
+
+/* Global Genesis Theme */
+body {
+  font-family: var(--recursive-font);
+  background: var(--deep-black);
+  color: var(--cloud-white);
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+section {
+  padding: 8vh 5vw;
+}
 
 /* Video Background Styles */
 .video-container {
@@ -13,7 +37,14 @@
   overflow: hidden;
 }
 
-.video-container video {
+.bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
   mix-blend-mode: multiply;
   filter: contrast(1.1) brightness(0.8);
   will-change: transform;
@@ -23,6 +54,69 @@
 .video-container img {
   mix-blend-mode: multiply;
   filter: contrast(1.1) brightness(0.8);
+}
+
+/* Genesis Theme Components */
+.genesis-card {
+  background: rgba(42, 42, 42, 0.8);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(126, 96, 191, 0.3);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 255, 157, 0.1);
+}
+
+.genesis-button {
+  background: linear-gradient(135deg, #7E60BF 0%, #00FF9D 100%);
+  color: #2A2A2A;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.genesis-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 255, 157, 0.3);
+}
+
+.genesis-text-glow {
+  text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+}
+
+.genesis-border-glow {
+  border: 1px solid rgba(0, 255, 157, 0.3);
+  box-shadow: 0 0 20px rgba(0, 255, 157, 0.2);
+}
+
+/* Navigation Styles */
+.nav-link {
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 157, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.nav-link:hover::before {
+  left: 100%;
+}
+
+/* Music Player Styles */
+.music-player {
+  background: rgba(42, 42, 42, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(126, 96, 191, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 /* Dark mode adjustments */
