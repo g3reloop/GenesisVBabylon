@@ -13,6 +13,16 @@
 }
 
 /* Global Genesis Theme */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--deep-black);
+  min-height: 100vh;
+  font-family: var(--recursive-font);
+}
+
 body {
   font-family: var(--recursive-font);
   background: var(--deep-black);
@@ -21,12 +31,7 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-}
-
-/* Ensure proper background coverage */
-html {
-  background: var(--deep-black);
-  min-height: 100vh;
+  line-height: 1.6;
 }
 
 section {
@@ -263,4 +268,48 @@ section {
     image-rendering: -webkit-optimize-contrast;
     image-rendering: crisp-edges;
   }
+}
+
+/* Force Genesis theme colors - Important overrides */
+.bg-deep-black {
+  background-color: var(--deep-black) !important;
+}
+
+.text-cloud-white {
+  color: var(--cloud-white) !important;
+}
+
+.text-plasma-green {
+  color: var(--plasma-green) !important;
+}
+
+.text-electric-violet {
+  color: var(--electric-violet) !important;
+}
+
+.bg-electric-violet {
+  background-color: var(--electric-violet) !important;
+}
+
+.bg-plasma-green {
+  background-color: var(--plasma-green) !important;
+}
+
+.border-electric-violet {
+  border-color: var(--electric-violet) !important;
+}
+
+.border-plasma-green {
+  border-color: var(--plasma-green) !important;
+}
+
+/* Ensure proper font family */
+.font-recursive {
+  font-family: var(--recursive-font) !important;
+}
+
+/* Force dark theme */
+body, html {
+  background: var(--deep-black) !important;
+  color: var(--cloud-white) !important;
 }
