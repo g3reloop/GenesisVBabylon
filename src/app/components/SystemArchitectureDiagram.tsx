@@ -163,7 +163,7 @@ const SystemArchitectureDiagram: React.FC = () => {
       group.appendChild(text);
       svg.appendChild(group);
     });
-  }, [hoveredNode]);
+  }, [hoveredNode, systemNodes]);
 
   return (
     <div className="w-full">

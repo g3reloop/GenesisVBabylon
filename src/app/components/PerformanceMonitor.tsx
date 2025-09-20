@@ -21,11 +21,14 @@ const PerformanceMonitor: React.FC = () => {
     // Monitor memory usage
     const updateMemoryUsage = () => {
       if ('memory' in performance) {
-        const memory = (performance as any).memory;
-        setMetrics(prev => ({
-          ...prev,
-          memoryUsage: Math.round(memory.usedJSHeapSize / 1024 / 1024) // MB
-        }));
+
+        const memory = (performance as { memory?: { usedJSHeapSize: number } }).memory;
+        if (memory) {
+          setMetrics(prev => ({
+            ...prev,
+            memoryUsage: Math.round(memory.usedJSHeapSize / 1024 / 1024) // MB
+          }));
+        }
       }
     };
 

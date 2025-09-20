@@ -16,7 +16,6 @@ interface ImageGalleryProps {
 export default function ImageGallery({ 
   images, 
   title = "Visual Explorations", 
-  showSectionFilter = false,
   className = ""
 }: ImageGalleryProps) {
   const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -136,7 +135,7 @@ export default function ImageGallery({
         {/* Carousel Viewport */}
         <div className="overflow-hidden" ref={emblaRef}>
           <div className="flex touch-pan-x touch-pinch-zoom">
-            {images.map((image, index) => (
+            {images.map((image) => (
               <div
                 key={image.id}
                 className="min-w-0 w-[85%] sm:w-[45%] md:w-[30%] lg:w-[23%] xl:w-[19%] pl-4 first:pl-0"

@@ -177,7 +177,7 @@ export function AdvancedMusicPlayerProvider({ songs, children }: AdvancedMusicPl
     }
   };
 
-  const playNext = () => {
+  const playNext = useCallback(() => {
     if (!currentSong) return;
     
     // Stop current audio before changing
@@ -197,7 +197,7 @@ export function AdvancedMusicPlayerProvider({ songs, children }: AdvancedMusicPl
     }
     
     playSong(sortedSongs[nextIndex]);
-  };
+  }, [currentSong, sortedSongs, playSong]);
 
   const playPrevious = () => {
     if (!currentSong) return;
@@ -358,8 +358,9 @@ export function AdvancedMusicPlayerProvider({ songs, children }: AdvancedMusicPl
       
       // Cleanup function
       return () => {
-        if (audioRef.current) {
-          audioRef.current.removeEventListener('loadedmetadata', handleLoadedMetadata);
+        const audio = audioRef.current;
+        if (audio) {
+          audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
         }
       };
     }

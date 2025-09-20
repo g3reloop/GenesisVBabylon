@@ -32,7 +32,7 @@ export default function TestImagesPage() {
         
         <div>
           <h2 className="text-lg font-semibold mb-2">Regular img tag test</h2>
-          <img
+          <Image
             src="/images/cover-art/pcg3-cover.png"
             alt="PCG3 Cover Art"
             width={200}

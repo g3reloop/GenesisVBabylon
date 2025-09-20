@@ -68,7 +68,7 @@ const GenesisMusicPlayer = () => {
     if (isPlaying) {
       audio.play();
     }
-  }, [currentTrack, tracks]);
+  }, [currentTrack, tracks, isPlaying]);
 
   const togglePlayPause = () => {
     const audio = audioRef.current;
